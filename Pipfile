@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = ">=2.0.3"
-python-dotenv = ">=0.19.2"
-authlib = ">=1.0"
-requests = ">=2.27.1"
-flask-wtf = "*"
-email-validator = "*"
+flask = "==2.3.2"
+python-dotenv = "==1.0.0"
+authlib = "==1.2.0"
+requests = "==2.31.0"
+flask-wtf = "1.1.1"
+email-validator = "2.0.0.post2"
+Flask-Beaker = "0.2.0"
 
 [dev-packages]
 pydevd-pycharm = "==221.6008.17"
