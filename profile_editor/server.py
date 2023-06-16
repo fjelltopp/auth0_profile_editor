@@ -123,11 +123,9 @@ def user_data_updated(form, user_id):
 def profile():
     form = UserDataForm()
 
-    flash("Hello!")
-
     if form.validate_on_submit():
         user_data_updated(form, session.get("user").get("userinfo").get("sub"))
-        flash(f'User {form.name.data}, Org={form.orgname.data}')
+        flash(f'User profile successfully saved')
     elif not form.is_submitted():
         form = load_data_from_server(form)
 
