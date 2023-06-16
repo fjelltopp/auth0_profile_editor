@@ -10,7 +10,6 @@ authlib = "==1.2.0"
 requests = "==2.31.0"
 flask-wtf = "1.1.1"
 email-validator = "2.0.0.post2"
-Flask-Beaker = "0.2.0"
 
 [dev-packages]
 pydevd-pycharm = "==221.6008.17"
