@@ -35,33 +35,30 @@ oauth.register(
 )
 
 
-# Controllers API
-def get_user_metadata(mgmt_token, user_id):
-    log.debug(f"looking for user: {user_id}")
-    headers = {
-        'Authorization': f'Bearer {mgmt_token}',
-        'Content-Type': 'application/json'
-    }
-    auth0_domain = env.get("AUTH0_DOMAIN")
-    res = requests.get(f'https://{auth0_domain}/api/v2/users/{user_id}', headers=headers)
-    res_json = res.json()
-    log.debug(f"user: {res_json}")
+def get_user_metadata(session):
+    mgmt_token = get_mgmt_token()
+    user_metadata = {"orgname": "", "jobtitle": ""}
 
-    return res_json
+    if session:
+        user_id = session.get("user").get("userinfo").get("sub")
+
+        log.debug(f"looking for user: {user_id}")
+        headers = {
+            'Authorization': f'Bearer {mgmt_token}',
+            'Content-Type': 'application/json'
+        }
+        auth0_domain = env.get("AUTH0_DOMAIN")
+        res_json = requests.get(f'https://{auth0_domain}/api/v2/users/{user_id}', headers=headers).json()
+        user_metadata = res_json.get("user_metadata", user_metadata)
+
+    return user_metadata
 
 
 @app.route("/")
 def home():
-    user_metadata = {"orgname": "None", "jobtitle": "None"}
-
-    if session and session.get("user"):
-        mgmt_token = get_mgmt_token()
-        user_metadata = get_user_metadata(mgmt_token, session.get("user").get("userinfo").get("sub"))['user_metadata']
-
     return render_template(
         "home.html",
         session=session.get("user"),
-        user_metadata=user_metadata,
         pretty=json.dumps(session.get("user"), indent=4),
         domain=env.get("AUTH0_DOMAIN"),
         env_file=ENV_FILE
@@ -86,18 +83,18 @@ def get_mgmt_token():
 
 def load_data_from_server(form):
     if session and session.get("user"):
-        mgmt_token = get_mgmt_token()
-        user_metadata = get_user_metadata(mgmt_token, session.get("user").get("userinfo").get("sub"))['user_metadata']
+        user_metadata = get_user_metadata(session)
         form.name.data = session.get("user").get("userinfo").get("name")
         form.email.data = session.get("user").get("userinfo").get("email")
-        form.orgname.data = user_metadata.get("orgname", "")
-        form.jobtitle.data = user_metadata.get("jobtitle", "")
+        log.warning(f"Meta: {user_metadata}")
+        form.orgname.data = user_metadata["orgname"]
+        form.jobtitle.data = user_metadata["jobtitle"]
 
     return form
 
 
 @app.route("/profile", methods=['GET', 'POST'])
-def profile_read():
+def profile():
     form = UserDataForm()
 
     flash("Hello!")
