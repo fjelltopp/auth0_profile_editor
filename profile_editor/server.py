@@ -86,11 +86,37 @@ def load_data_from_server(form):
         user_metadata = get_user_metadata(session)
         form.name.data = session.get("user").get("userinfo").get("name")
         form.email.data = session.get("user").get("userinfo").get("email")
-        log.warning(f"Meta: {user_metadata}")
         form.orgname.data = user_metadata["orgname"]
         form.jobtitle.data = user_metadata["jobtitle"]
 
     return form
+
+
+def convert_to_data_object(form):
+    return {
+        "name": form.name.data,
+        "email": form.email.data,
+        "user_metadata": {
+            "orgname": form.orgname.data,
+            "jobtitle": form.jobtitle.data
+        }
+    }
+
+
+def user_data_updated(form, user_id):
+    data_object = convert_to_data_object(form)
+    mgmt_token = get_mgmt_token()
+    headers = {
+        'Authorization': f'Bearer {mgmt_token}',
+        'Content-Type': 'application/json'
+    }
+    auth0_domain = env.get("AUTH0_DOMAIN")
+    url = f'https://{auth0_domain}/api/v2/users/{user_id}'
+    result = requests.patch(url, headers=headers, data=json.dumps(data_object))
+    if result.status_code != 200:
+        log.error(f"Couldn't save user data: {result.content}")
+
+    return result.status_code == 200
 
 
 @app.route("/profile", methods=['GET', 'POST'])
@@ -100,6 +126,7 @@ def profile():
     flash("Hello!")
 
     if form.validate_on_submit():
+        user_data_updated(form, session.get("user").get("userinfo").get("sub"))
         flash(f'User {form.name.data}, Org={form.orgname.data}')
     elif not form.is_submitted():
         form = load_data_from_server(form)
