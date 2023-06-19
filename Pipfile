@@ -13,6 +13,7 @@ email-validator = "==2.0.0.post2"
 
 [dev-packages]
 pydevd-pycharm = "==221.6008.17"
+pytest = "7.3.2"
 
 [requires]
 python_version = "3.8"
