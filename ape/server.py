@@ -2,14 +2,15 @@ from urllib.parse import quote_plus, urlencode
 
 from flask import redirect, render_template, session, url_for, flash
 
-import logic
-from app import create_app, env
-from forms import UserDataForm
+import ape.logic as logic
+import ape.forms as forms
+import ape.util as util
 
-app, oauth = create_app()
+log = util.log
+ape_app, oauth = util.create_app()
 
 
-@app.route("/")
+@ape_app.route("/")
 def home():
     if session.get("user", ""):
         return redirect("/profile")
@@ -19,9 +20,9 @@ def home():
         )
 
 
-@app.route("/profile", methods=['GET', 'POST'])
+@ape_app.route("/profile", methods=['GET', 'POST'])
 def profile():
-    form = UserDataForm()
+    form = forms.UserDataForm()
 
     if form.validate_on_submit():
         logic.update_user_data(form, session.get("user").get("sub"))
@@ -35,36 +36,37 @@ def profile():
     )
 
 
-@app.route("/callback", methods=["GET", "POST"])
+@ape_app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user"] = token.get("userinfo")
     return redirect("/profile")
 
 
-@app.route("/logout")
+@ape_app.route("/logout")
 def logout():
     session.clear()
     return redirect(
         "https://"
-        + env.get("AUTH0_DOMAIN")
+        + util.env.get("AUTH0_DOMAIN")
         + "/v2/logout?"
         + urlencode(
             {
                 "returnTo": url_for("home", _external=True),
-                "client_id": env.get("AUTH0_CLIENT_ID"),
+                "client_id": util.env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus,
         )
     )
 
 
-@app.errorhandler(Exception)
+@ape_app.errorhandler(Exception)
 def exception_handler(e):
+    log.error(f"Problem! {e}")
     return render_template(
         "error.html"
     )
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=env.get("PORT", 3000), debug=True)
+    ape_app.run(host="0.0.0.0", port=util.env.get("PORT", 3000), debug=True)

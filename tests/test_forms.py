@@ -1,6 +1,6 @@
 from flask_wtf.csrf import generate_csrf
 
-from ape.app import create_app
+from ape.util import create_app
 from ape.forms import UserDataForm
 
 

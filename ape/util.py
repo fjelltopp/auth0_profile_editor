@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
@@ -11,7 +11,7 @@ if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 env = os.environ
-log = logging.getLogger("profile_editor")
+log = logging.getLogger("auth0_profile_editor")
 
 
 def create_app():

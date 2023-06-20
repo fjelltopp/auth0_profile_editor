@@ -1,26 +1,27 @@
-import http.client
 import json
 
 import requests
 from flask import session
+import ape.util as util
 
-from ape.app import log, env
+log = util.log
 
 
 def get_user_metadata():
     mgmt_token = get_mgmt_token()
     user_metadata = {"orgname": "", "jobtitle": ""}
 
-    if session:
-        user_id = session.get("user").get("sub")
+    if get_session():
+        user_id = get_session().get("user").get("sub")
 
         log.debug(f"looking for user: {user_id}")
         headers = {
             'Authorization': f'Bearer {mgmt_token}',
             'Content-Type': 'application/json'
         }
-        auth0_domain = env.get("AUTH0_DOMAIN")
-        res_json = requests.get(f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}', headers=headers).json()
+        auth0_domain = util.env.get("AUTH0_DOMAIN")
+        url = f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}'
+        res_json = requests.get(url, headers=headers).json()
         user_metadata = res_json.get("user_metadata", user_metadata)
 
     return user_metadata
@@ -30,29 +31,25 @@ def get_protocol():
     return "https"
 
 
+def get_session():
+    return session
+
+
 def get_mgmt_token():
-    mgmt_client_id = env.get('AUTH0_MGMT_CLIENT_ID')
-    mgmt_client_secret = env.get('AUTH0_MGMT_CLIENT_SECRET')
-    auth0_domain = env.get("AUTH0_DOMAIN")
-    conn = get_connection(auth0_domain)
+    mgmt_client_id = util.env.get('AUTH0_MGMT_CLIENT_ID')
+    mgmt_client_secret = util.env.get('AUTH0_MGMT_CLIENT_SECRET')
+    auth0_domain = util.env.get("AUTH0_DOMAIN")
     payload = f"grant_type=client_credentials&client_id={mgmt_client_id}&client_secret={mgmt_client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
     headers = {'content-type': "application/x-www-form-urlencoded"}
-    conn.request("POST", f"/oauth/token", payload, headers)
-    response = conn.getresponse()
-    data = response.read()
-
-    mgmt_token = json.loads(data.decode("utf-8")).get("access_token")
+    response = requests.post(f'{get_protocol()}://{auth0_domain}/oauth/token', data=payload, headers=headers)
+    mgmt_token = response.json().get("access_token")
 
     return mgmt_token
 
 
-def get_connection(auth0_domain):
-    return http.client.HTTPSConnection(host=f"{auth0_domain}")
-
-
 def load_data_from_server(form):
-    if session and session.get("user"):
+    if get_session() and get_session().get("user"):
         user_metadata = get_user_metadata()
         form.name.data = session.get("user").get("name")
         form.email.data = session.get("user").get("email")
@@ -80,7 +77,7 @@ def update_user_data(form, user_id):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    auth0_domain = util.env.get("AUTH0_DOMAIN")
     url = f'https://{auth0_domain}/api/v2/users/{user_id}'
     result = requests.patch(url, headers=headers, data=json.dumps(data_object))
     if result.status_code != 200:
