@@ -12,7 +12,7 @@ def get_user_metadata():
     user_metadata = {"orgname": "", "jobtitle": ""}
 
     if session:
-        user_id = session.get("user").get("userinfo").get("sub")
+        user_id = session.get("user").get("sub")
 
         log.debug(f"looking for user: {user_id}")
         headers = {
@@ -46,8 +46,8 @@ def get_mgmt_token():
 def load_data_from_server(form):
     if session and session.get("user"):
         user_metadata = get_user_metadata()
-        form.name.data = session.get("user").get("userinfo").get("name")
-        form.email.data = session.get("user").get("userinfo").get("email")
+        form.name.data = session.get("user").get("name")
+        form.email.data = session.get("user").get("email")
         form.orgname.data = user_metadata.get("orgname", "")
         form.jobtitle.data = user_metadata.get("jobtitle", "")
 

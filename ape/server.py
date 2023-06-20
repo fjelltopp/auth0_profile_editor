@@ -24,7 +24,7 @@ def profile():
     form = UserDataForm()
 
     if form.validate_on_submit():
-        logic.update_user_data(form, session.get("user").get("userinfo").get("sub"))
+        logic.update_user_data(form, session.get("user").get("sub"))
         flash(f'User profile successfully saved')
     elif not form.is_submitted():
         form = logic.load_data_from_server(form)
@@ -38,7 +38,7 @@ def profile():
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    session["user"] = token
+    session["user"] = token.get("userinfo")
     return redirect("/profile")
 
 
@@ -59,7 +59,7 @@ def logout():
     )
 
 
-@app.errorhandler(logic.ProfileEditingError)
+@app.errorhandler(Exception)
 def exception_handler(e):
     return render_template(
         "error.html"
