@@ -4,7 +4,7 @@ import json
 import requests
 from flask import session
 
-from app import log, env
+from ape.app import log, env
 
 
 def get_user_metadata():
@@ -20,17 +20,21 @@ def get_user_metadata():
             'Content-Type': 'application/json'
         }
         auth0_domain = env.get("AUTH0_DOMAIN")
-        res_json = requests.get(f'https://{auth0_domain}/api/v2/users/{user_id}', headers=headers).json()
+        res_json = requests.get(f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}', headers=headers).json()
         user_metadata = res_json.get("user_metadata", user_metadata)
 
     return user_metadata
+
+
+def get_protocol():
+    return "https"
 
 
 def get_mgmt_token():
     mgmt_client_id = env.get('AUTH0_MGMT_CLIENT_ID')
     mgmt_client_secret = env.get('AUTH0_MGMT_CLIENT_SECRET')
     auth0_domain = env.get("AUTH0_DOMAIN")
-    conn = http.client.HTTPSConnection(host=f"{auth0_domain}")
+    conn = get_connection(auth0_domain)
     payload = f"grant_type=client_credentials&client_id={mgmt_client_id}&client_secret={mgmt_client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
     headers = {'content-type': "application/x-www-form-urlencoded"}
@@ -41,6 +45,10 @@ def get_mgmt_token():
     mgmt_token = json.loads(data.decode("utf-8")).get("access_token")
 
     return mgmt_token
+
+
+def get_connection(auth0_domain):
+    return http.client.HTTPSConnection(host=f"{auth0_domain}")
 
 
 def load_data_from_server(form):
