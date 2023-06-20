@@ -1,55 +1,108 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>Profile editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   </head>
   <body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
-    {% if session %}
-    <p><a href="/logout" id="qsLogoutBtn">Logout</a></p>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.name.label }}<br>
+
+    <div class="container mt-5">
+      <div class="form-container">
+        <div class="title-container container">
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <img src="https://adr.unaids.org/uploads/group/2019-03-26-091157.595395unaids-logo.png" alt="UNAIDS Logo" class="logo">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="title">Profile editor</div>
+            </div>
+          </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div style="padding:20px">
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            {% endif %}
+        {% endwith %}
+
+      {% if session %}
+
+      <div style="padding:20px; text-align: right;">
+          <a href="/logout" id="qsLogoutBtn">Logout</a>
+      </div>
+
+    <div class="form-content">
+      <form action="" method="post" novalidate>
+          {{ form.hidden_tag() }}
+        <div class="mb-3">
+          <div class="position-relative">
+            <div class="icon">
+                <img alt="name" width="28px" height="28px" src="https://pbgen.blob.core.windows.net/unaids/name.svg">
+            </div>
             {{ form.name(size=32) }}
             {% for error in form.name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.email.label }}<br>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="position-relative">
+            <div class="icon">
+                <svg aria-hidden="true" focusable="false" width="14px" height="13px" viewBox="0 0 32 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="auth0-lock-icon auth0-lock-icon-box"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="32px" transform="translate(-2155.000000, -2317.000000)" fill="#373A39"><g id="Group-856" transform="translate(1.000000, 1.000000)"><path id="Fill-419" d="M2184,2339 C2184,2339.55 2183.55,2340 2183,2340 L2157,2340 C2156.45,2340 2156,2339.55 2156,2339 L2156,2319 C2156,2318.45 2156.45,2318 2157,2318 L2183,2318 C2183.55,2318 2184,2318.45 2184,2319 L2184,2339 L2184,2339 Z M2184,2316 L2156,2316 C2154.89,2316 2154,2316.89 2154,2318 L2154,2340 C2154,2341.1 2154.89,2342 2156,2342 L2184,2342 C2185.1,2342 2186,2341.1 2186,2340 L2186,2318 C2186,2316.89 2185.1,2316 2184,2316 L2184,2316 Z M2176,2322 L2180,2322 L2180,2326 L2176,2326 L2176,2322 Z M2174,2328 L2182,2328 L2182,2320 L2174,2320 L2174,2328 Z M2158,2332 L2172,2332 L2172,2330 L2158,2330 L2158,2332 Z M2158,2336 L2172,2336 L2172,2334 L2158,2334 L2158,2336 Z"></path></g></g></g></svg>
+            </div>
             {{ form.email(size=32) }}
             {% for error in form.email.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.orgname.label }}<br>
-            {{ form.orgname(size=32) }}
-            {% for error in form.orgname.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.jobtitle.label }}<br>
-            {{ form.jobtitle(size=32) }}
-            {% for error in form.jobtitle.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="position-relative">
+            <div class="icon">
+              <img width="28px" height="28px" alt="jobtitle" src="https://pbgen.blob.core.windows.net/unaids/title.svg">
+            </div>
+        {{ form.orgname(size=32) }}
+        {% for error in form.orgname.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="position-relative">
+            <div class="icon">
+              <img alt="orgname" width="28px" height="28px" src="https://pbgen.blob.core.windows.net/unaids/org.svg">
+            </div>
+        {{ form.jobtitle(size=32) }}
+        {% for error in form.jobtitle.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+          </div>
+        </div>
+        {{ form.submit() }}
+      </form>
+    </div>
+
     {% else %}
-    <h1 id="profileDropDown">Welcome Guest</h1>
-    <p><a href="/login" id="qsLoginBtn">Login</a></p>
+        <h1 id="profileDropDown">Welcome Guest</h1>
+        <p><a href="/login" id="qsLoginBtn">Login</a></p>
     {% endif %}
+
+      </div>
+    </div>
+
   </body>
 </html>
