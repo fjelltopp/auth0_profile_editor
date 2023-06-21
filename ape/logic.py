@@ -7,24 +7,19 @@ import ape.util as util
 log = util.log
 
 
-def get_user_metadata():
+def get_user_data(user_id):
     mgmt_token = get_mgmt_token()
-    user_metadata = {"orgname": "", "jobtitle": ""}
 
-    if get_session():
-        user_id = get_session().get("user").get("sub")
+    log.debug(f"looking for user: {user_id}")
+    headers = {
+        'Authorization': f'Bearer {mgmt_token}',
+        'Content-Type': 'application/json'
+    }
+    auth0_domain = util.env.get("AUTH0_DOMAIN")
+    url = f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}'
+    res_json = requests.get(url, headers=headers).json()
 
-        log.debug(f"looking for user: {user_id}")
-        headers = {
-            'Authorization': f'Bearer {mgmt_token}',
-            'Content-Type': 'application/json'
-        }
-        auth0_domain = util.env.get("AUTH0_DOMAIN")
-        url = f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}'
-        res_json = requests.get(url, headers=headers).json()
-        user_metadata = res_json.get("user_metadata", user_metadata)
-
-    return user_metadata
+    return res_json
 
 
 def get_protocol():
@@ -48,22 +43,23 @@ def get_mgmt_token():
     return mgmt_token
 
 
-def load_data_from_server(form):
-    if get_session() and get_session().get("user"):
-        user_metadata = get_user_metadata()
-        form.name.data = session.get("user").get("name")
-        form.email.data = session.get("user").get("email")
-        form.orgname.data = user_metadata.get("orgname", "")
-        form.jobtitle.data = user_metadata.get("jobtitle", "")
+def load_data_from_server_to_form(form, user_id):
+    user_data = get_user_data(user_id)
+    user_metadata = user_data.get("user_metadata")
+
+    form.name.data = user_metadata.get("full_name", "")
+    form.email.data = user_data.get("email", "")
+    form.orgname.data = user_metadata.get("orgname", "")
+    form.jobtitle.data = user_metadata.get("jobtitle", "")
 
     return form
 
 
 def convert_to_data_object(form):
     return {
-        "name": form.name.data,
         "email": form.email.data,
         "user_metadata": {
+            "full_name": form.name.data,
             "orgname": form.orgname.data,
             "jobtitle": form.jobtitle.data
         }

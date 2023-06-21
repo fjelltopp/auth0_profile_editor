@@ -12,7 +12,7 @@ ape_app, oauth = util.create_app()
 
 @ape_app.route("/")
 def home():
-    if session.get("user", ""):
+    if session.get("user_id", ""):
         return redirect("/profile")
     else:
         return oauth.auth0.authorize_redirect(
@@ -22,13 +22,17 @@ def home():
 
 @ape_app.route("/profile", methods=['GET', 'POST'])
 def profile():
+    if not session.get("user_id", ""):
+        return redirect("/")
+
     form = forms.UserDataForm()
+    user_id = session.get("user_id")
 
     if form.validate_on_submit():
-        logic.update_user_data(form, session.get("user").get("sub"))
+        logic.update_user_data(form, user_id)
         flash(f'User profile successfully saved')
     elif not form.is_submitted():
-        form = logic.load_data_from_server(form)
+        form = logic.load_data_from_server_to_form(form, user_id)
 
     return render_template(
         "profile.html",
@@ -39,7 +43,7 @@ def profile():
 @ape_app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    session["user"] = token.get("userinfo")
+    session["user_id"] = token.get("userinfo").get("sub")
     return redirect("/profile")
 
 
@@ -55,14 +59,14 @@ def logout():
                 "returnTo": url_for("home", _external=True),
                 "client_id": util.env.get("AUTH0_CLIENT_ID"),
             },
-            quote_via=quote_plus,
+            quote_via=quote_plus
         )
     )
 
 
 @ape_app.errorhandler(Exception)
 def exception_handler(e):
-    log.error(f"Problem! {e}")
+    log.error(f"An exception was caught: {e}")
     return render_template(
         "error.html"
     )
