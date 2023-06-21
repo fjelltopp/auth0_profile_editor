@@ -27,7 +27,7 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
             <div class="alert alert-success" style="margin:20px">
-            <ul>
+            <ul style="list-style: none;">
                 {% for message in messages %}
                 <li>{{ message }}</li>
                 {% endfor %}
