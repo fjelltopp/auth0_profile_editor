@@ -6,9 +6,6 @@
     <div class="auth0-lock auth0-lock-opened" lang="en" style="font-size: 1rem;">
     <div class="auth0-lock-overlay">
     </div>
-    <div>
-        <a href="/logout" id="qsLogoutBtn" class="logout-button">Logout</a>
-    </div>
 
     <div class="auth0-lock-center">
         <form class="auth0-lock-widget" action="" method="post" novalidate>
@@ -18,12 +15,15 @@
                     <div class="auth0-lock-content-wrapper">
                         <div class="auth0-lock-header">
                             <div class="auth0-lock-header-bg auth0-lock-blur-support">
-                                <div class="auth0-lock-header-bg-blur" style="background-image: url('https://adr.unaids.org/uploads/group/2019-03-26-091157.595395unaids-logo.png');"></div>
+                                <div class="auth0-lock-header-bg-blur" style="background-image: url('{{ url_for('static', filename='img/unaids-logo.png') }}');"></div>
                                 <div class="auth0-lock-header-bg-solid" style="background-color: #E31837;"></div>
                             </div>
                             <div class="auth0-lock-header-welcome">
-                                <img alt="" class="auth0-lock-header-logo" src="https://adr.unaids.org/uploads/group/2019-03-26-091157.595395unaids-logo.png">
-                                <div class="auth0-lock-name" title="ADR Local Development">Profile editor</div>
+                                <a href="/logout" id="qsLogoutBtn" class="logout-button">Log out</a>
+                                <img alt="" class="auth0-lock-header-logo" src="{{ url_for('static', filename='img/unaids-logo.png') }}">
+                                <div class="auth0-lock-name" title="ADR Local Development">
+                                    <span style="font-size: 120%; color: black">HIV Tools</span><br><span style="font-size: 90%; color: black">Your profile</span>
+                                </div>
                             </div>
                         </div>
                         <div class="auth0-lock-content-body-wrapper" style="margin-top: 0px;">
