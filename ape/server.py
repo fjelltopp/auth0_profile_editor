@@ -40,6 +40,14 @@ def profile():
     )
 
 
+@ape_app.route("/change_password", methods=['GET', 'POST'])
+def change_password():
+    if not session.get("user_id", ""):
+        return redirect("/")
+
+    return redirect(location=(logic.get_password_change_url(session.get("user_id"))))
+
+
 @ape_app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
