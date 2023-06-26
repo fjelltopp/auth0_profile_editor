@@ -85,5 +85,3 @@ def update_user_data(form, user_id):
 
 class ProfileEditingError(Exception):
     pass
-
-
