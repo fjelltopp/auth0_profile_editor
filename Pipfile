@@ -18,4 +18,4 @@ pytest-vcr = "==1.0.2"
 pytest-dotenv = "0.5.2"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"
