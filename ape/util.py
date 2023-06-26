@@ -21,6 +21,8 @@ def create_app():
     oauth = OAuth(app)
     csrf = CSRFProtect()
     csrf.init_app(app)
+    domain = env.get("AUTH0_DOMAIN")
+    url = f'https://{domain}/.well-known/openid-configuration'
 
     oauth.register(
         "auth0",
@@ -29,7 +31,7 @@ def create_app():
         client_kwargs={
             "scope": "openid profile email",
         },
-        server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
+        server_metadata_url=url,
     )
 
     return app, oauth
