@@ -14,7 +14,8 @@ email-validator = "==2.0.0.post2"
 [dev-packages]
 pydevd-pycharm = "==221.6008.17"
 pytest = "7.3.2"
-pytest-httpserver = "==1.0.8"
+pytest-vcr = "==1.0.2"
+pytest-dotenv = "0.5.2"
 
 [requires]
 python_version = "3.8"
