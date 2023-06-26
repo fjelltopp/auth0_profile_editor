@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 import pytest
 
 import ape.logic as logic
@@ -12,14 +10,6 @@ ENV_DATA = {
     "AUTH0_MGMT_CLIENT_ID": "AUTH0_MGMT_CLIENT_ID_value",
     "AUTH0_MGMT_CLIENT_SECRET": "AUTH0_MGMT_CLIENT_SECRET_value"
 }
-
-
-# @pytest.fixture(scope='module')
-# def vcr_config():
-#     return {
-#         # Replace the Authorization request header with "DUMMY" in cassettes
-#         # "filter_headers": [('authorization', 'Bearer: fake-bearer-token')],
-#     }
 
 
 @pytest.mark.vcr
@@ -35,7 +25,8 @@ def test_load_user_data():
 
     form = logic.load_data_from_server_to_form(form, FT_MEMBER)
 
-    assert_correct_user_data(form, "Fjelltopp Member", "ft_member@fjelltopp.org", "FT Ltd", "Member")
+    assert_correct_user_data(form, "Fjelltopp Member",
+                             "ft_member@fjelltopp.org", "FT Ltd", "Member")
 
 
 @pytest.mark.vcr
@@ -53,7 +44,8 @@ def test_load_data_from_server_when_only_fullname_in_user_metadata():
 
     form = logic.load_data_from_server_to_form(form, FT_ADMIN)
 
-    assert_correct_user_data(form, "Fjelltopp Admin", "ft_admin@fjelltopp.org", "", "")
+    assert_correct_user_data(form, "Fjelltopp Admin",
+                             "ft_admin@fjelltopp.org", "", "")
 
 
 def assert_correct_user_data(form, full_name, email, orgname, jobtitle):
@@ -72,5 +64,6 @@ class DummyUserDataForm:
     email = Holder()
     orgname = Holder()
     jobtitle = Holder()
+
 
 
