@@ -9,4 +9,3 @@ class UserDataForm(FlaskForm):
     orgname = StringField('Organisation name', validators=[DataRequired()])
     jobtitle = StringField('Job title', validators=[DataRequired()])
     submit = SubmitField('Save')
-

@@ -64,6 +64,3 @@ class DummyUserDataForm:
     email = Holder()
     orgname = Holder()
     jobtitle = Holder()
-
-
-
