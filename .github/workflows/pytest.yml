@@ -1,0 +1,49 @@
+name: Tests
+on: [pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install requirements
+        run: pip install flake8 pycodestyle
+      - name: Check syntax
+        run: |
+          flake8 . --count --show-source --statistics
+
+  mypy:
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Prepare venv
+        run: |
+          pip install pipenv
+          pipenv sync --dev
+      - name: Run mypy
+        run: pipenv run mypy .
+
+  test:
+    needs:
+      - lint
+    name: Auth0 Profile Editor pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Prepare venv
+        run: |
+          pip install pipenv
+          pipenv sync --dev
+      - name: Run tests
+        run: pipenv run pytest --vcr-record=none
