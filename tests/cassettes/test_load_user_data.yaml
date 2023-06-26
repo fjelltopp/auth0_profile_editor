@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: grant_type=client_credentials&client_id=xePr3iS8fi2J7vChvLk15yh9OXbmOwuD&client_secret=-K1pz5_Ab9BGfMuInzHF_jdlG4iB8Tw3dZODCdo2I_iu2nS78oSaYYsElWrgXzej&audience=https://hivtools.eu.auth0.com/api/v2/
+    body: grant_type=client_credentials&client_id=client_id&client_secret=client_secret&audience=https://fake-auth0-domain/api/v2/
     headers:
       Accept:
       - '*/*'
