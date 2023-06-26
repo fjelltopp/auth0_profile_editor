@@ -1,0 +1,161 @@
+interactions:
+- request:
+    body: grant_type=client_credentials&client_id=client_id&client_secret=client_secret&audience=https://fake-auth0-domain/api/v2/
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '198'
+      User-Agent:
+      - python-requests/2.31.0
+      content-type:
+      - application/x-www-form-urlencoded
+    method: POST
+    uri: https://fake-auth0-domain/oauth/token
+  response:
+    body:
+      string: '{"access_token":"mgmt_token_value","scope":"read:users
+        update:users read:users_app_metadata update:users_app_metadata create:users_app_metadata
+        create:user_tickets update:clients update:client_keys update:client_credentials","expires_in":86400,"token_type":"Bearer"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 7dd61b2e2d331661-WAW
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 26 Jun 2023 14:23:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - did=s%3Av0%3Af7952f90-142c-11ee-b003-8f2e4140a22c.8CN%2BJxTVhstdGDOXwjVqAmFh33CJqO3AKXXsoHTWT6I;
+        Max-Age=31557600; Path=/; Expires=Tue, 25 Jun 2024 20:23:05 GMT; HttpOnly;
+        Secure; SameSite=None
+      - did_compat=s%3Av0%3Af7952f90-142c-11ee-b003-8f2e4140a22c.8CN%2BJxTVhstdGDOXwjVqAmFh33CJqO3AKXXsoHTWT6I;
+        Max-Age=31557600; Path=/; Expires=Tue, 25 Jun 2024 20:23:06 GMT; HttpOnly;
+        Secure
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Auth0-RequestId:
+      - 923e1c31f3450b40bb90
+      X-Content-Type-Options:
+      - nosniff
+      X-RateLimit-Limit:
+      - '30'
+      X-RateLimit-Remaining:
+      - '29'
+      X-RateLimit-Reset:
+      - '1687789387'
+      alt-svc:
+      - h3=":443"; ma=86400
+      ot-baggage-auth0-request-id:
+      - 7dd61b2e2d331661
+      ot-tracer-sampled:
+      - 'true'
+      ot-tracer-spanid:
+      - 7648114864c344ae
+      ot-tracer-traceid:
+      - 6e00a8a8442bb974
+      traceparent:
+      - 00-00000000000000006e00a8a8442bb974-7648114864c344ae-01
+      tracestate:
+      - auth0-request-id=7dd61b2e2d331661,auth0=true
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"email": "truly_test@fjelltopp.org", "user_metadata": {"full_name": "Truly
+      Test User", "orgname": "Fjelltopp", "jobtitle": "Test user"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer mgmt_token_value
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '137'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.31.0
+    method: PATCH
+    uri: https://fake-auth0-domain/api/v2/users/user_id
+  response:
+    body:
+      string: '{"created_at":"2023-06-26T14:11:51.646Z","email":"truly_test@fjelltopp.org","email_verified":false,
+      "identities":[{"connection":"Username-Password-Authentication","user_id":"user_id","provider":"auth0","isSocial":false}],
+      "name":"truly_test_user@fjelltopp.org","nickname":"truly_test_user",
+      "picture":"https://s.gravatar.com/avatar/2a05c50e30e1a01adb6250bf75584725?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ftr.png",
+      "updated_at":"2023-06-26T14:23:06.331Z","user_id":"user_id","user_metadata":{"full_name":"Truly
+        Test User","jobtitle":"Test user","orgname":"Fjelltopp"}}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 7dd61b2fee45bfcb-WAW
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 26 Jun 2023 14:23:06 GMT
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, origin
+      X-Content-Type-Options:
+      - nosniff
+      access-control-expose-headers:
+      - WWW-Authenticate,Server-Authorization
+      alt-svc:
+      - h3=":443"; ma=86400
+      ot-baggage-auth0-request-id:
+      - 7dd61b2fee45bfcb
+      ot-tracer-sampled:
+      - 'true'
+      ot-tracer-spanid:
+      - 049703213673744b
+      ot-tracer-traceid:
+      - 63f8e84f177be26e
+      traceparent:
+      - 00-000000000000000063f8e84f177be26e-049703213673744b-01
+      tracestate:
+      - auth0-request-id=7dd61b2fee45bfcb,auth0=true
+      x-ratelimit-limit:
+      - '10'
+      x-ratelimit-remaining:
+      - '9'
+      x-ratelimit-reset:
+      - '1687789387'
+    status:
+      code: 200
+      message: OK
+version: 1

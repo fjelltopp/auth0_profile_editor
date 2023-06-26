@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 
 import ape.logic as logic
@@ -38,7 +40,7 @@ def test_load_data_from_server_when_userdata_empty():
     assert_correct_user_data(form, "", "ct_editor@cote.org", "", "")
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 def test_load_data_from_server_when_only_fullname_in_user_metadata():
     form = DummyUserDataForm()
 
@@ -46,6 +48,33 @@ def test_load_data_from_server_when_only_fullname_in_user_metadata():
 
     assert_correct_user_data(form, "Fjelltopp Admin",
                              "ft_admin@fjelltopp.org", "", "")
+
+
+@pytest.mark.vcr
+def test_update_user_data():
+    form = DummyUserDataForm()
+    form.email.data = "truly_test@fjelltopp.org"
+    form.name.data = "Truly Test User"
+    form.orgname.data = "Fjelltopp"
+    form.jobtitle.data = "Test user"
+
+    logic.update_user_data(form, "user_id")
+
+
+@mock.patch('ape.logic.log')
+@pytest.mark.vcr
+def test_update_user_data_should_throw_upon_error(log):
+    form = DummyUserDataForm()
+    form.email.data = "some@email.com"
+    form.name.data = "Full Name"
+    form.orgname.data = "Fjelltopp"
+    form.jobtitle.data = "Job Title"
+
+    with pytest.raises(logic.ProfileEditingError):
+        logic.update_user_data(form, "user_id")
+
+    log.error.assert_called_once_with(
+        'Couldn\'t save user data: b\'{"statusCode":401,"error":"Unauthorized","message":"Invalid token"}\'')
 
 
 def assert_correct_user_data(form, full_name, email, orgname, jobtitle):
