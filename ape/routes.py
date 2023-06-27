@@ -1,26 +1,31 @@
+import logging
+import os
 from urllib.parse import quote_plus, urlencode
 
-from flask import redirect, render_template, session, url_for, flash
+from authlib.integrations.flask_client import OAuth
+from flask import redirect, render_template, session, url_for, flash, Blueprint
 
 import ape.logic as logic
 import ape.forms as forms
 import ape.util as util
 
-log = util.log
-ape_app, oauth = util.create_app()
+log = logging.getLogger(__name__)
+oauth = OAuth()
+app_blueprint = Blueprint('main', __name__)
+env = os.environ
 
 
-@ape_app.route("/")
+@app_blueprint.route("/")
 def home():
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
         return oauth.auth0.authorize_redirect(
-            redirect_uri=url_for("callback", _external=True)
+            redirect_uri=url_for("main.callback", _external=True)
         )
 
 
-@ape_app.route("/profile", methods=['GET', 'POST'])
+@app_blueprint.route("/profile", methods=['GET', 'POST'])
 def profile():
     if not session.get("user_id", ""):
         return redirect("/")
@@ -40,37 +45,33 @@ def profile():
     )
 
 
-@ape_app.route("/callback", methods=["GET", "POST"])
+@app_blueprint.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user_id"] = token.get("userinfo").get("sub")
     return redirect("/profile")
 
 
-@ape_app.route("/logout")
+@app_blueprint.route("/logout")
 def logout():
     session.clear()
     return redirect(
         "https://"
-        + util.env.get("AUTH0_DOMAIN")
+        + env.get("AUTH0_DOMAIN")
         + "/v2/logout?"
         + urlencode(
             {
-                "returnTo": url_for("home", _external=True),
-                "client_id": util.env.get("AUTH0_CLIENT_ID"),
+                "returnTo": url_for("main.home", _external=True),
+                "client_id": env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus
         )
     )
 
 
-@ape_app.errorhandler(Exception)
+@app_blueprint.errorhandler(Exception)
 def exception_handler(e):
-    log.error(f"An exception was caught: {e}")
+    log.error(f"An exception was caught: {e}", e)
     return render_template(
         "error.html"
     )
-
-
-if __name__ == "__main__":
-    ape_app.run(host="0.0.0.0", port=util.env.get("PORT", 3000), debug=True)
