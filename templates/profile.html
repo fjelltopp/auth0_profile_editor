@@ -1,55 +1,13 @@
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Profile editor</title>
   </head>
   <body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
     {% if session %}
-    <p><a href="/logout" id="qsLogoutBtn">Logout</a></p>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.name.label }}<br>
-            {{ form.name(size=32) }}
-            {% for error in form.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=32) }}
-            {% for error in form.email.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.orgname.label }}<br>
-            {{ form.orgname(size=32) }}
-            {% for error in form.orgname.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.jobtitle.label }}<br>
-            {{ form.jobtitle(size=32) }}
-            {% for error in form.jobtitle.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            <a href="/change_password">Click here to change password</a>
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+    {%  include './snippets/form.html' %}
     {% else %}
     <h1 id="profileDropDown">Welcome Guest</h1>
     <p><a href="/login" id="qsLoginBtn">Login</a></p>
