@@ -73,8 +73,9 @@ def test_update_user_data_should_throw_upon_error(log):
     with pytest.raises(logic.ProfileEditingError):
         logic.update_user_data(form, "user_id")
 
+    error_msg = '{"statusCode":401,"error":"Unauthorized","message":"Invalid token"}'
     log.error.assert_called_once_with(
-        'Couldn\'t save user data: b\'{"statusCode":401,"error":"Unauthorized","message":"Invalid token"}\'')
+        f'Couldn\'t save user data: b\'{error_msg}\'')
 
 
 def assert_correct_user_data(form, full_name, email, orgname, jobtitle):
