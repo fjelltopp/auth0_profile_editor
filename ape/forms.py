@@ -30,9 +30,10 @@ class UserDataForm(FlaskForm):
     orgname_input_params = get_input_params('orgname', 'Organisation name')
     orgname = StringField('Organisation name', validators=[DataRequired()],
                           render_kw=orgname_input_params)
+    job_title_input_params = get_input_params('jobtitle', 'Job title')
     jobtitle = StringField('Job title',
-                       validators=[DataRequired()],
-                       render_kw=get_input_params('jobtitle', 'Job title'))
+                           validators=[DataRequired()],
+                           render_kw=job_title_input_params)
     submit = SubmitField('Update', render_kw={
         "class_": "auth0-lock-submit submit",
         "style": "background-color: rgb(227, 24, 55); display: block;",
