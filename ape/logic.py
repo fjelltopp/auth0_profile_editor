@@ -54,8 +54,6 @@ def load_data_from_server_to_form(form, user_id):
     form.orgname.data = user_metadata.get("orgname", "")
     form.jobtitle.data = user_metadata.get("jobtitle", "")
 
-    log.error(f"Got form with email: {form.email.data}, user_meta: {user_metadata}, user_data: {user_data}, user_id: {user_id}")
-
     return form
 
 
