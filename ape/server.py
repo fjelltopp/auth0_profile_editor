@@ -30,7 +30,7 @@ def profile():
 
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
-        flash(f'User profile successfully saved')
+        flash('User profile successfully saved')
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 

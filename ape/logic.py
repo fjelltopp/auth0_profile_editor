@@ -31,13 +31,15 @@ def get_session():
 
 
 def get_mgmt_token():
-    mgmt_client_id = util.env.get('AUTH0_MGMT_CLIENT_ID')
-    mgmt_client_secret = util.env.get('AUTH0_MGMT_CLIENT_SECRET')
+    client_id = util.env.get('AUTH0_CLIENT_ID')
+    client_secret = util.env.get('AUTH0_CLIENT_SECRET')
     auth0_domain = util.env.get("AUTH0_DOMAIN")
-    payload = f"grant_type=client_credentials&client_id={mgmt_client_id}&client_secret={mgmt_client_secret}" \
+    payload = f"grant_type=client_credentials&client_id={client_id}" \
+              f"&client_secret={client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
+    url = f'{get_protocol()}://{auth0_domain}/oauth/token'
     headers = {'content-type': "application/x-www-form-urlencoded"}
-    response = requests.post(f'{get_protocol()}://{auth0_domain}/oauth/token', data=payload, headers=headers)
+    response = requests.post(url, data=payload, headers=headers)
     mgmt_token = response.json().get("access_token")
 
     return mgmt_token
@@ -45,7 +47,7 @@ def get_mgmt_token():
 
 def load_data_from_server_to_form(form, user_id):
     user_data = get_user_data(user_id)
-    user_metadata = user_data.get("user_metadata")
+    user_metadata = user_data.get("user_metadata", {})
 
     form.name.data = user_metadata.get("full_name", "")
     form.email.data = user_data.get("email", "")
@@ -67,7 +69,7 @@ def convert_to_data_object(form):
 
 
 def update_user_data(form, user_id):
-    data_object = convert_to_data_object(form)
+    data = convert_to_data_object(form)
     mgmt_token = get_mgmt_token()
     headers = {
         'Authorization': f'Bearer {mgmt_token}',
@@ -75,7 +77,7 @@ def update_user_data(form, user_id):
     }
     auth0_domain = util.env.get("AUTH0_DOMAIN")
     url = f'https://{auth0_domain}/api/v2/users/{user_id}'
-    result = requests.patch(url, headers=headers, data=json.dumps(data_object))
+    result = requests.patch(url, headers=headers, data=json.dumps(data))
     if result.status_code != 200:
         log.error(f"Couldn't save user data: {result.content}")
         raise ProfileEditingError()
@@ -83,4 +85,3 @@ def update_user_data(form, user_id):
 
 class ProfileEditingError(Exception):
     pass
-
