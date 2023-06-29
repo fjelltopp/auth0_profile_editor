@@ -1,0 +1,148 @@
+interactions:
+- request:
+    body: grant_type=client_credentials&client_id=client_id&client_secret=client_secret&audience=https://fake-auth0-domain/api/v2/
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '198'
+      User-Agent:
+      - python-requests/2.31.0
+      content-type:
+      - application/x-www-form-urlencoded
+    method: POST
+    uri: https://fake-auth0-domain/oauth/token
+  response:
+    body:
+      string: '{"access_token":"incorrect_mgmt_token_value","scope":"read:users
+        update:users read:users_app_metadata update:users_app_metadata create:users_app_metadata
+        create:user_tickets update:clients update:client_keys update:client_credentials","expires_in":86400,"token_type":"Bearer"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 7dd62035da71c003-WAW
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 26 Jun 2023 14:26:32 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - did=s%3Av0%3A726157d0-142d-11ee-9393-6faa9deb9c44.0VWtkDeHreDBLxEZ1A%2FxjTJHv2tZvXyX72l%2Bx55p4Fk;
+        Max-Age=31557600; Path=/; Expires=Tue, 25 Jun 2024 20:26:32 GMT; HttpOnly;
+        Secure; SameSite=None
+      - did_compat=s%3Av0%3A726157d0-142d-11ee-9393-6faa9deb9c44.0VWtkDeHreDBLxEZ1A%2FxjTJHv2tZvXyX72l%2Bx55p4Fk;
+        Max-Age=31557600; Path=/; Expires=Tue, 25 Jun 2024 20:26:32 GMT; HttpOnly;
+        Secure
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Auth0-RequestId:
+      - d31bf47f5ca2de73762b
+      X-Content-Type-Options:
+      - nosniff
+      X-RateLimit-Limit:
+      - '30'
+      X-RateLimit-Remaining:
+      - '29'
+      X-RateLimit-Reset:
+      - '1687789593'
+      alt-svc:
+      - h3=":443"; ma=86400
+      ot-baggage-auth0-request-id:
+      - 7dd62035da71c003
+      ot-tracer-sampled:
+      - 'true'
+      ot-tracer-spanid:
+      - 4fe3079a6d1f8d3f
+      ot-tracer-traceid:
+      - 3fe3a32d43c7c1b1
+      traceparent:
+      - 00-00000000000000003fe3a32d43c7c1b1-4fe3079a6d1f8d3f-01
+      tracestate:
+      - auth0-request-id=7dd62035da71c003,auth0=true
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"email": "some@email.com", "user_metadata": {"full_name": "Full Name",
+      "orgname": "Fjelltopp", "jobtitle": "Job Title"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer incorrect_mgmt_token_value
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '121'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.31.0
+    method: PATCH
+    uri: https://fake-auth0-domain/api/v2/users/user_id
+  response:
+    body:
+      string: '{"statusCode":401,"error":"Unauthorized","message":"Invalid token"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 7dd620375b2a3563-WAW
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '67'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 26 Jun 2023 14:26:32 GMT
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      access-control-expose-headers:
+      - WWW-Authenticate,Server-Authorization
+      alt-svc:
+      - h3=":443"; ma=86400
+      ot-baggage-auth0-request-id:
+      - 7dd620375b2a3563
+      ot-tracer-sampled:
+      - 'true'
+      ot-tracer-spanid:
+      - 7a50d32632d37193
+      ot-tracer-traceid:
+      - 6a54a5a27d7eb177
+      traceparent:
+      - 00-00000000000000006a54a5a27d7eb177-7a50d32632d37193-01
+      tracestate:
+      - auth0-request-id=7dd620375b2a3563,auth0=true
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
