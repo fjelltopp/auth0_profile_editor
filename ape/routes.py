@@ -50,7 +50,7 @@ def profile():
     )
 
 
-@app_blueprint.route("/callback", methods=["GET", "POST"])
+@app_blueprint.route("/change_password", methods=["GET", "POST"])
 def change_password():
     if not session.get("user_id", ""):
         return redirect("/")

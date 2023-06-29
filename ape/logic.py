@@ -85,7 +85,7 @@ def execute_mgmt_api_request(method, url, data_object=None):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = util.env.get("AUTH0_DOMAIN")
+    auth0_domain = env.get("AUTH0_DOMAIN")
     data = json.dumps(data_object) if data_object else None
     result = requests.request(method=method, url=f'https://{auth0_domain}{url}', headers=headers, data=data)
     return result
@@ -94,7 +94,7 @@ def execute_mgmt_api_request(method, url, data_object=None):
 def get_password_change_url(user_id):
     url = '/api/v2/tickets/password-change'
     data_object = {"user_id": user_id,
-                   "client_id": util.env.get("AUTH0_CLIENT_ID")}
+                   "client_id": env.get("AUTH0_CLIENT_ID")}
     result = execute_mgmt_api_request("post", url, data_object)
 
     if result.status_code != 201:
