@@ -1,39 +1,44 @@
-
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth0.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{#<script src="{{ url_for('static' , filename='js/form.js') }}"/>#}
 
 <div id="auth0-lock-container-1" class="auth0-lock-container">
     <div class="auth0-lock auth0-lock-opened" lang="en" style="font-size: 1rem;">
-    <div class="auth0-lock-overlay">
-    </div>
+        <div class="auth0-lock-overlay">
+        </div>
 
-    <div class="auth0-lock-center">
-        <form class="auth0-lock-widget" action="" method="post" novalidate>
-            {{ form.hidden_tag() }}
-            <div class="auth0-lock-widget-container"><div class="auth0-lock-cred-pane auth0-lock-quiet">
-                <div class="auth0-lock-cred-pane-internal-wrapper">
-                    <div class="auth0-lock-content-wrapper">
-                        <div class="auth0-lock-header">
-                            <div class="auth0-lock-header-bg auth0-lock-blur-support">
-                                <div class="auth0-lock-header-bg-blur" style="background-image: url('{{ url_for('static', filename='img/unaids-logo.png') }}');"></div>
-                                <div class="auth0-lock-header-bg-solid" style="background-color: #E31837;"></div>
-                            </div>
-                            <div class="auth0-lock-header-welcome">
-                                {% if return_url %}
-                                    <a href="{{ return_url }}" id="qsBackBtn" class="back-button">Back</a>
-                                {% endif %}
-                                <a href="/logout" id="qsLogoutBtn" class="logout-button">Log out</a>
-                                <img alt="" class="auth0-lock-header-logo" src="{{ url_for('static', filename='img/unaids-logo.png') }}">
-                                <div class="auth0-lock-name" title="ADR Local Development">
-                                    <span style="font-size: 120%; color: black">HIV Tools</span><br><span style="font-size: 90%; color: black">Your profile</span>
+        <div class="auth0-lock-center">
+            <form class="auth0-lock-widget" action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="auth0-lock-widget-container">
+                    <div class="auth0-lock-cred-pane auth0-lock-quiet">
+                        <div class="auth0-lock-cred-pane-internal-wrapper">
+                            <div class="auth0-lock-content-wrapper">
+                                <div class="auth0-lock-header">
+                                    <div class="auth0-lock-header-bg auth0-lock-blur-support">
+                                        <div class="auth0-lock-header-bg-blur"
+                                             style="background-image: url('{{ url_for('static', filename='img/unaids-logo.png') }}');"></div>
+                                        <div class="auth0-lock-header-bg-solid"
+                                             style="background-color: #E31837;"></div>
+                                    </div>
+                                    <div class="auth0-lock-header-welcome">
+                                        {% if return_url %}
+                                            <a href="{{ return_url }}" id="qsBackBtn" class="back-button">Back</a>
+                                        {% endif %}
+                                        <a href="/logout" id="qsLogoutBtn" class="logout-button">Log out</a>
+                                        <img alt="" class="auth0-lock-header-logo"
+                                             src="{{ url_for('static', filename='img/unaids-logo.png') }}">
+                                        <div class="auth0-lock-name" title="ADR Local Development">
+                                            <span style="font-size: 120%; color: black">HIV Tools</span><br><span
+                                                style="font-size: 90%; color: black">Your profile</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="auth0-lock-content-body-wrapper" style="margin-top: 0px;">
-                            <div>
-                                <div></div>
-                            </div>
-                            <div style="position: relative;">
+                                <div class="auth0-lock-content-body-wrapper" style="margin-top: 0px;">
+                                    <div>
+                                        <div></div>
+                                    </div>
+                                    <div style="position: relative;">
                                 <span>
                                     <div class="" style="">
                                         <div style="visibility: inherit;">
@@ -47,11 +52,34 @@
 
                                                     {% with messages = get_flashed_messages() %}
                                                         {% if messages %}
-                                                        <ul class="flash-message">
+                                                            <ul class="flash-message">
                                                             {% for message in messages %}
-                                                            <li>{{ message }}</li>
+                                                                <li>{{ message }}</li>
                                                             {% endfor %}
+                                                                {% if return_url %}
+                                                                    <br/>
+                                                                    <li>
+                                                                        You will be redirected to your original page in <span
+                                                                            id="redirectTimer">10</span> s.
+                                                                        If you don't get redirected <a
+                                                                            href="{{ return_url }}">click here</a>.
+                                                                    </li>
+                                                                    <script type="text/javascript">
+                                                                    var return_url = "{{ return_url }}";
+                                                                    var time = 10;
+
+                                                                    window.setInterval(function() {
+                                                                        time--;
+                                                                        if (time === 0) {
+                                                                            window.location = return_url;
+                                                                        } else {
+                                                                            document.getElementById('redirectTimer').innerHTML = time + "";
+                                                                        }
+                                                                    }, 1000)
+                                                                    </script>
+                                                                {% endif %}
                                                         </ul>
+
                                                         {% endif %}
                                                     {% endwith %}
 
@@ -63,13 +91,17 @@
                                                                 <div>
 
                                                                     <div class="auth0-lock-input-block auth0-lock-input-name">
-                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><img class="auth0-lock-custom-icon" alt="name" src="https://pbgen.blob.core.windows.net/unaids/name.svg">
+                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><img
+                                                                                class="auth0-lock-custom-icon"
+                                                                                alt="name"
+                                                                                src="https://pbgen.blob.core.windows.net/unaids/name.svg">
                                                                         {{ form.name(size=32) }}
                                                                         </div>
                                                                     </div>
 
                                                                     {% if form.name.errors %}
-                                                                    <div role="alert" class="auth0-lock-error-msg" style="margin-bottom: 10px">
+                                                                        <div role="alert" class="auth0-lock-error-msg"
+                                                                             style="margin-bottom: 10px">
                                                                         {% for error in form.name.errors %}
                                                                             <div class="auth0-lock-error-invalid-hint">{{ error }}</div>
                                                                         {% endfor %}
@@ -77,13 +109,29 @@
                                                                     {% endif %}
 
                                                                     <div class="auth0-lock-input-block auth0-lock-input-email">
-                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><svg aria-hidden="true" focusable="false" width="14px" height="13px" viewBox="0 0 32 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="auth0-lock-icon auth0-lock-icon-box"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="32px" transform="translate(-2155.000000, -2317.000000)" fill="#373A39"><g id="Group-856" transform="translate(1.000000, 1.000000)"><path id="Fill-419" d="M2184,2339 C2184,2339.55 2183.55,2340 2183,2340 L2157,2340 C2156.45,2340 2156,2339.55 2156,2339 L2156,2319 C2156,2318.45 2156.45,2318 2157,2318 L2183,2318 C2183.55,2318 2184,2318.45 2184,2319 L2184,2339 L2184,2339 Z M2184,2316 L2156,2316 C2154.89,2316 2154,2316.89 2154,2318 L2154,2340 C2154,2341.1 2154.89,2342 2156,2342 L2184,2342 C2185.1,2342 2186,2341.1 2186,2340 L2186,2318 C2186,2316.89 2185.1,2316 2184,2316 L2184,2316 Z M2176,2322 L2180,2322 L2180,2326 L2176,2326 L2176,2322 Z M2174,2328 L2182,2328 L2182,2320 L2174,2320 L2174,2328 Z M2158,2332 L2172,2332 L2172,2330 L2158,2330 L2158,2332 Z M2158,2336 L2172,2336 L2172,2334 L2158,2334 L2158,2336 Z"></path></g></g></g></svg>
+                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><svg
+                                                                                aria-hidden="true" focusable="false"
+                                                                                width="14px" height="13px"
+                                                                                viewBox="0 0 32 26" version="1.1"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                class="auth0-lock-icon auth0-lock-icon-box"><g
+                                                                                id="Page-1" stroke="none"
+                                                                                stroke-width="1" fill="none"
+                                                                                fill-rule="evenodd"><g id="32px"
+                                                                                                       transform="translate(-2155.000000, -2317.000000)"
+                                                                                                       fill="#373A39"><g
+                                                                                id="Group-856"
+                                                                                transform="translate(1.000000, 1.000000)"><path
+                                                                                id="Fill-419"
+                                                                                d="M2184,2339 C2184,2339.55 2183.55,2340 2183,2340 L2157,2340 C2156.45,2340 2156,2339.55 2156,2339 L2156,2319 C2156,2318.45 2156.45,2318 2157,2318 L2183,2318 C2183.55,2318 2184,2318.45 2184,2319 L2184,2339 L2184,2339 Z M2184,2316 L2156,2316 C2154.89,2316 2154,2316.89 2154,2318 L2154,2340 C2154,2341.1 2154.89,2342 2156,2342 L2184,2342 C2185.1,2342 2186,2341.1 2186,2340 L2186,2318 C2186,2316.89 2185.1,2316 2184,2316 L2184,2316 Z M2176,2322 L2180,2322 L2180,2326 L2176,2326 L2176,2322 Z M2174,2328 L2182,2328 L2182,2320 L2174,2320 L2174,2328 Z M2158,2332 L2172,2332 L2172,2330 L2158,2330 L2158,2332 Z M2158,2336 L2172,2336 L2172,2334 L2158,2334 L2158,2336 Z"></path></g></g></g></svg>
                                                                         {{ form.email(size=32) }}
                                                                         </div>
                                                                     </div>
 
                                                                     {% if form.email.errors %}
-                                                                    <div role="alert" class="auth0-lock-error-msg" style="margin-bottom: 10px">
+                                                                        <div role="alert" class="auth0-lock-error-msg"
+                                                                             style="margin-bottom: 10px">
                                                                         {% for error in form.email.errors %}
                                                                             <div class="auth0-lock-error-invalid-hint">{{ error }}</div>
                                                                         {% endfor %}
@@ -91,13 +139,17 @@
                                                                     {% endif %}
 
                                                                     <div class="auth0-lock-input-block auth0-lock-input-orgname">
-                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><img class="auth0-lock-custom-icon" alt="orgname" src="https://pbgen.blob.core.windows.net/unaids/org.svg">
+                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><img
+                                                                                class="auth0-lock-custom-icon"
+                                                                                alt="orgname"
+                                                                                src="https://pbgen.blob.core.windows.net/unaids/org.svg">
                                                                         {{ form.orgname(size=32) }}
                                                                         </div>
                                                                     </div>
 
                                                                     {% if form.orgname.errors %}
-                                                                    <div role="alert" class="auth0-lock-error-msg" style="margin-bottom: 10px">
+                                                                        <div role="alert" class="auth0-lock-error-msg"
+                                                                             style="margin-bottom: 10px">
                                                                         {% for error in form.orgname.errors %}
                                                                             <div class="auth0-lock-error-invalid-hint">{{ error }}</div>
                                                                         {% endfor %}
@@ -105,20 +157,26 @@
                                                                     {% endif %}
 
                                                                     <div class="auth0-lock-input-block auth0-lock-input-jobtitle">
-                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><img class="auth0-lock-custom-icon" alt="jobtitle" src="https://pbgen.blob.core.windows.net/unaids/title.svg">
+                                                                        <div class="auth0-lock-input-wrap auth0-lock-input-wrap-with-icon"><img
+                                                                                class="auth0-lock-custom-icon"
+                                                                                alt="jobtitle"
+                                                                                src="https://pbgen.blob.core.windows.net/unaids/title.svg">
                                                                             {{ form.jobtitle(size=32) }}
                                                                         </div>
                                                                     </div>
 
                                                                     {% if form.jobtitle.errors %}
-                                                                    <div role="alert" class="auth0-lock-error-msg" style="margin-bottom: 10px">
+                                                                        <div role="alert" class="auth0-lock-error-msg"
+                                                                             style="margin-bottom: 10px">
                                                                         {% for error in form.jobtitle.errors %}
                                                                             <div class="auth0-lock-error-invalid-hint">{{ error }}</div>
                                                                         {% endfor %}
                                                                     </div>
                                                                     {% endif %}
 
-                                                                    <p class="auth0-lock-alternative"><a class="auth0-lock-alternative-link" href="{{ url_for('main.change_password') }}">To change your password click here.</a></p>
+                                                                    <p class="auth0-lock-alternative"><a
+                                                                            class="auth0-lock-alternative-link"
+                                                                            href="{{ url_for('main.change_password') }}">To change your password click here.</a></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -131,16 +189,16 @@
                                         </div>
                                     </div>
                                 </span>
+                                    </div>
+                                </div>
                             </div>
+
+                            {{ form.submit() }}
+
                         </div>
                     </div>
-
-                    {{ form.submit() }}
-
                 </div>
-            </div>
+            </form>
         </div>
-    </form>
     </div>
-</div>
 </div>
