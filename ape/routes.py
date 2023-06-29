@@ -37,7 +37,7 @@ def profile():
 
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
-        flash(f'User profile successfully saved')
+        flash('User profile successfully saved')
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
@@ -48,6 +48,14 @@ def profile():
         form=form,
         return_url=return_url
     )
+
+
+@app_blueprint.route("/callback", methods=["GET", "POST"])
+def change_password():
+    if not session.get("user_id", ""):
+        return redirect("/")
+
+    return redirect(location=(logic.get_password_change_url(session.get("user_id"))))
 
 
 @app_blueprint.route("/callback", methods=["GET", "POST"])

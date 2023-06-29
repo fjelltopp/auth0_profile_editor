@@ -1,10 +1,12 @@
-from unittest.mock import patch
+from unittest import mock
 
 import pytest
 
 import ape.logic as logic
 
-USER_ID = "auth0|837f0cc8ee2d"
+FT_MEMBER = "ft_member_id"
+COTE_EDITOR = 'cote_editor_id'
+FT_ADMIN = 'ft_admin_id'
 
 ENV_DATA = {
     "AUTH0_MGMT_CLIENT_ID": "AUTH0_MGMT_CLIENT_ID_value",
@@ -12,96 +14,69 @@ ENV_DATA = {
 }
 
 
-def get_env_value(key):
-    return ENV_DATA.get(key)
-
-
-def session_get_value(key):
-    if key == "user":
-        return {
-            "sub": "auth0|user_id",
-            "name": "Some User Name",
-            "email": "user@domain.com"
-        }
-
-
-@pytest.fixture
-def http_server(httpserver):
-    ENV_DATA['AUTH0_DOMAIN'] = f"{httpserver.host}:{httpserver.port}"
-    return httpserver
-
-
-@patch("ape.logic.get_protocol")
-@patch("ape.logic.util.env.get")
-def test_get_mgmt_token(env_get, get_protocol, http_server):
-    env_get.side_effect = get_env_value
-    get_protocol.return_value = "http"
-    auth0_domain = f"{http_server.host}:{http_server.port}"
-    expected_payload = f"grant_type=client_credentials&client_id=AUTH0_MGMT_CLIENT_ID_value" \
-                       "&client_secret=AUTH0_MGMT_CLIENT_SECRET_value" \
-                       f"&audience=https://{auth0_domain}/api/v2/"
-    http_server.expect_request("/oauth/token", data=expected_payload) \
-        .respond_with_data(response_data='{"access_token": "mgmt_token_value"}')
-
+@pytest.mark.vcr
+def test_get_mgmt_token():
     token = logic.get_mgmt_token()
 
     assert token == "mgmt_token_value"
 
 
-@patch("ape.logic.get_protocol")
-@patch("ape.logic.util.env.get")
-@patch("ape.logic.get_mgmt_token")
-@patch("ape.logic.get_session")
-def test_load_user_data(session, get_mgmt_token, env_get, get_protocol, http_server):
-    env_get.side_effect = get_env_value
-    session.return_value.get.side_effect = session_get_value
-    get_mgmt_token.return_value = "mgmt_token_value"
-    get_protocol.return_value = "http"
+@pytest.mark.vcr
+def test_load_user_data():
     form = DummyUserDataForm()
-    response = '{"email": "first_user@fjelltopp.org", ' \
-               '"user_metadata": {"orgname": "Fjelltopp", "jobtitle": "Epidemiologist", "full_name": "First User"}}'
-    http_server.expect_request(f"/api/v2/users/{USER_ID}").respond_with_data(response)
 
-    form = logic.load_data_from_server_to_form(form, USER_ID)
+    form = logic.load_data_from_server_to_form(form, FT_MEMBER)
 
-    assert_correct_user_data(form, "First User", "first_user@fjelltopp.org", "Fjelltopp", "Epidemiologist")
+    assert_correct_user_data(form, "Fjelltopp Member",
+                             "ft_member@fjelltopp.org", "FT Ltd", "Member")
 
 
-@patch("ape.logic.get_protocol")
-@patch("ape.logic.util.env.get")
-@patch("ape.logic.get_mgmt_token")
-@patch("ape.logic.get_session")
-def test_load_data_from_server_when_userdata_empty(session, get_mgmt_token, env_get, get_protocol, http_server):
-    env_get.side_effect = get_env_value
-    session.return_value.get.side_effect = session_get_value
-    get_mgmt_token.return_value = "mgmt_token_value"
-    get_protocol.return_value = "http"
+@pytest.mark.vcr
+def test_load_data_from_server_when_userdata_empty():
     form = DummyUserDataForm()
-    response = '{"email": "first_user@fjelltopp.org", "user_metadata": {}}'
-    http_server.expect_request(f"/api/v2/users/{USER_ID}").respond_with_data(response)
 
-    form = logic.load_data_from_server_to_form(form, USER_ID)
+    form = logic.load_data_from_server_to_form(form, COTE_EDITOR)
 
-    assert_correct_user_data(form, "", "first_user@fjelltopp.org", "", "")
+    assert_correct_user_data(form, "", "ct_editor@cote.org", "", "")
 
 
-@patch("ape.logic.get_protocol")
-@patch("ape.logic.util.env.get")
-@patch("ape.logic.get_mgmt_token")
-@patch("ape.logic.get_session")
-def test_load_data_from_server_when_only_orgname_in_user_metadata(session, get_mgmt_token, env_get, get_protocol,
-                                                                  http_server):
-    env_get.side_effect = get_env_value
-    session.return_value.get.side_effect = session_get_value
-    get_mgmt_token.return_value = "mgmt_token_value"
-    get_protocol.return_value = "http"
+@pytest.mark.vcr
+def test_load_data_from_server_when_only_fullname_in_user_metadata():
     form = DummyUserDataForm()
-    user_metadata = '{"email": "first_user@fjelltopp.org", "user_metadata": {"orgname": "Fjelltopp"}}'
-    http_server.expect_request(f"/api/v2/users/{USER_ID}").respond_with_data(user_metadata)
 
-    form = logic.load_data_from_server_to_form(form, USER_ID)
+    form = logic.load_data_from_server_to_form(form, FT_ADMIN)
 
-    assert_correct_user_data(form, "", "first_user@fjelltopp.org", "Fjelltopp", "")
+    assert_correct_user_data(form, "Fjelltopp Admin",
+                             "ft_admin@fjelltopp.org", "", "")
+
+
+@pytest.mark.vcr
+def test_update_user_data():
+    form = DummyUserDataForm()
+    form.email.data = "truly_test@fjelltopp.org"
+    form.name.data = "Truly Test User"
+    form.orgname.data = "Fjelltopp"
+    form.jobtitle.data = "Test user"
+
+    logic.update_user_data(form, "user_id")
+
+
+@mock.patch('ape.logic.log')
+@pytest.mark.vcr
+def test_update_user_data_should_throw_upon_error(log):
+    form = DummyUserDataForm()
+    form.email.data = "some@email.com"
+    form.name.data = "Full Name"
+    form.orgname.data = "Fjelltopp"
+    form.jobtitle.data = "Job Title"
+
+    with pytest.raises(logic.ProfileEditingError):
+        logic.update_user_data(form, "user_id")
+
+    error_msg = '{"statusCode":401,"error":"Unauthorized",' \
+                '"message":"Invalid token"}'
+    log.error.assert_called_once_with(
+        f'Couldn\'t save user data: b\'{error_msg}\'')
 
 
 def assert_correct_user_data(form, full_name, email, orgname, jobtitle):
@@ -120,5 +95,3 @@ class DummyUserDataForm:
     email = Holder()
     orgname = Holder()
     jobtitle = Holder()
-
-
