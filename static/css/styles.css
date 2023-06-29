@@ -20,7 +20,18 @@
         z-index: 9999;
     }
 
-    .logout-button:hover {
+    .back-button {
+        position: absolute;
+        top: -0.625em;
+        left: -1.0625em;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #000000;
+        z-index: 9999;
+    }
+
+    .logout-button:hover, .back-button:hover {
         text-decoration: underline !important;
     }
 

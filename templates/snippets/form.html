@@ -19,6 +19,9 @@
                                 <div class="auth0-lock-header-bg-solid" style="background-color: #E31837;"></div>
                             </div>
                             <div class="auth0-lock-header-welcome">
+                                {% if return_url %}
+                                    <a href="{{ return_url }}" id="qsBackBtn" class="back-button">Back</a>
+                                {% endif %}
                                 <a href="/logout" id="qsLogoutBtn" class="logout-button">Log out</a>
                                 <img alt="" class="auth0-lock-header-logo" src="{{ url_for('static', filename='img/unaids-logo.png') }}">
                                 <div class="auth0-lock-name" title="ADR Local Development">
