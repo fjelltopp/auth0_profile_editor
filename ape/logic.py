@@ -73,7 +73,7 @@ def convert_to_data_object(form):
 def update_user_data(form, user_id):
     data_object = convert_to_data_object(form)
     url = f'/api/v2/users/{user_id}'
-    result = execute_mgmt_api_request(method="patch", url=url, data=data_object)
+    result = execute_mgmt_api_request(method="patch", url=url, data_object=data_object)
     if result.status_code != 200:
         log.error(f"Couldn't save user data: {result.content}")
         raise ProfileEditingError()
