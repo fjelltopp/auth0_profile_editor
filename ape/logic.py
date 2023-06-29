@@ -73,7 +73,8 @@ def convert_to_data_object(form):
 def update_user_data(form, user_id):
     data_object = convert_to_data_object(form)
     url = f'/api/v2/users/{user_id}'
-    result = execute_mgmt_api_request(method="patch", url=url, data_object=data_object)
+    result = execute_mgmt_api_request(method="patch",
+                                      url=url, data_object=data_object)
     if result.status_code != 200:
         log.error(f"Couldn't save user data: {result.content}")
         raise ProfileEditingError()
@@ -87,7 +88,9 @@ def execute_mgmt_api_request(method, url, data_object=None):
     }
     auth0_domain = env.get("AUTH0_DOMAIN")
     data = json.dumps(data_object) if data_object else None
-    result = requests.request(method=method, url=f'https://{auth0_domain}{url}', headers=headers, data=data)
+    url = f'https://{auth0_domain}{url}'
+    result = requests.request(method=method,
+                              url=url, headers=headers, data=data)
     return result
 
 

@@ -16,4 +16,3 @@ health.add_check(check_ape())
 @healthz_blueprint.route("/healthz")
 def healthz():
     return health.run()
-

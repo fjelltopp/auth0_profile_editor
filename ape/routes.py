@@ -3,7 +3,8 @@ import os
 from urllib.parse import quote_plus, urlencode
 
 from authlib.integrations.flask_client import OAuth
-from flask import redirect, render_template, session, url_for, flash, Blueprint, request
+from flask import redirect, render_template, session, url_for, \
+    flash, Blueprint, request
 
 import ape.logic as logic
 import ape.forms as forms
@@ -42,12 +43,12 @@ def profile():
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
-    return_url = session.get("return_url") if session.get("return_url", "") else None
+    url = session.get("return_url") if session.get("return_url", "") else None
 
     return render_template(
         "profile.html",
         form=form,
-        return_url=return_url
+        return_url=url
     )
 
 
@@ -56,7 +57,8 @@ def change_password():
     if not session.get("user_id", ""):
         return redirect("/")
 
-    return redirect(location=(logic.get_password_change_url(session.get("user_id"))))
+    pw_change_url = logic.get_password_change_url(session.get("user_id"))
+    return redirect(location=pw_change_url)
 
 
 @app_blueprint.route("/callback", methods=["GET", "POST"])
