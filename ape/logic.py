@@ -1,15 +1,15 @@
 import json
 import logging
-import os
 
 import requests
 from flask import session
-env = os.environ
 
 log = logging.getLogger(__name__)
 
 
 def get_user_data(user_id):
+    from app import app
+
     mgmt_token = get_mgmt_token()
 
     log.debug(f"looking for user: {user_id}")
@@ -17,7 +17,7 @@ def get_user_data(user_id):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    auth0_domain = app.config.get("AUTH0_DOMAIN")
     url = f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}'
     res_json = requests.get(url, headers=headers).json()
 
@@ -33,9 +33,11 @@ def get_session():
 
 
 def get_mgmt_token():
-    client_id = env.get('AUTH0_CLIENT_ID')
-    client_secret = env.get('AUTH0_CLIENT_SECRET')
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    from app import app
+
+    client_id = app.config.get('AUTH0_CLIENT_ID')
+    client_secret = app.config.get('AUTH0_CLIENT_SECRET')
+    auth0_domain = app.config.get("AUTH0_DOMAIN")
     payload = f"grant_type=client_credentials&client_id={client_id}" \
               f"&client_secret={client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
@@ -81,12 +83,14 @@ def update_user_data(form, user_id):
 
 
 def execute_mgmt_api_request(method, url, data_object=None):
+    from app import app
+
     mgmt_token = get_mgmt_token()
     headers = {
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    auth0_domain = app.config.get("AUTH0_DOMAIN")
     data = json.dumps(data_object) if data_object else None
     url = f'https://{auth0_domain}{url}'
     result = requests.request(method=method,
@@ -95,9 +99,11 @@ def execute_mgmt_api_request(method, url, data_object=None):
 
 
 def get_password_change_url(user_id):
+    from app import app
+
     url = '/api/v2/tickets/password-change'
     data_object = {"user_id": user_id,
-                   "client_id": env.get("AUTH0_CLIENT_ID")}
+                   "client_id": app.config.get("AUTH0_CLIENT_ID")}
     result = execute_mgmt_api_request("post", url, data_object)
 
     if result.status_code != 201:

@@ -18,7 +18,6 @@ gevent = "*"
 pydevd-pycharm = "==221.6008.17"
 pytest = "7.3.2"
 pytest-vcr = "==1.0.2"
-pytest-dotenv = "0.5.2"
 
 [requires]
 python_version = "3.10"

@@ -13,7 +13,6 @@ import ape.forms as forms
 log = logging.getLogger(__name__)
 oauth = OAuth()
 app_blueprint = Blueprint('main', __name__)
-env = os.environ
 
 
 @app_blueprint.route("/")

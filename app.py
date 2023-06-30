@@ -15,23 +15,34 @@ if ENV_FILE:
 env = os.environ
 
 
-def create_app():
+def create_app(config_object=None):
     flask_app = Flask(__name__, template_folder="./templates")
-    flask_app.secret_key = env.get("APP_SECRET_KEY")
+
+    if not config_object:
+        config_object = os.getenv('CONFIG_OBJECT', 'config.Config')
+    flask_app.config.from_object(config_object)
+
+    flask_app.secret_key = flask_app.config.get("APP_SECRET_KEY")
+
+    def get_locale():
+        if request:
+            return request.accept_languages.best_match(app.config['LANGUAGES'])
+        else:
+            return flask_app.config['DEFAULT_LANGUAGE']
 
     oauth.init_app(flask_app)
     csrf = CSRFProtect()
     csrf.init_app(flask_app)
     babel = Babel()
-    babel.init_app(flask_app)
+    babel.init_app(flask_app, locale_selector=get_locale)
     domain = env.get("AUTH0_DOMAIN")
 
     url = f'https://{domain}/.well-known/openid-configuration'
 
     oauth.register(
         "auth0",
-        client_id=env.get("AUTH0_CLIENT_ID"),
-        client_secret=env.get("AUTH0_CLIENT_SECRET"),
+        client_id=flask_app.config.get("AUTH0_CLIENT_ID"),
+        client_secret=flask_app.config.get("AUTH0_CLIENT_SECRET"),
         client_kwargs={
             "scope": "openid profile email",
         },
@@ -40,13 +51,6 @@ def create_app():
 
     flask_app.register_blueprint(app_blueprint)
     flask_app.register_blueprint(healthz_blueprint)
-
-    @babel.localeselector
-    def get_locale():
-        if request:
-            return request.accept_languages.best_match(['en'])
-        else:
-            return ['en']
 
     return flask_app
 
