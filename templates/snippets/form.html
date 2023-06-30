@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth0.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-{#<script src="{{ url_for('static' , filename='js/form.js') }}"/>#}
 
 <div id="auth0-lock-container-1" class="auth0-lock-container">
     <div class="auth0-lock auth0-lock-opened" lang="en" style="font-size: 1rem;">
@@ -23,14 +22,13 @@
                                     </div>
                                     <div class="auth0-lock-header-welcome">
                                         {% if return_url %}
-                                            <a href="{{ return_url }}" id="qsBackBtn" class="back-button">Back</a>
+                                            <a href="{{ return_url }}" id="qsBackBtn" class="back-button">{{ _('Back') }}</a>
                                         {% endif %}
-                                        <a href="/logout" id="qsLogoutBtn" class="logout-button">Log out</a>
+                                        <a href="/logout" id="qsLogoutBtn" class="logout-button">{{ _('Log out') }}</a>
                                         <img alt="" class="auth0-lock-header-logo"
                                              src="{{ url_for('static', filename='img/unaids-logo.png') }}">
-                                        <div class="auth0-lock-name" title="ADR Local Development">
-                                            <span style="font-size: 120%; color: black">HIV Tools</span><br><span
-                                                style="font-size: 90%; color: black">Your profile</span>
+                                        <div class="auth0-lock-name">
+                                            <span style="font-size: 120%; color: black">{{ _('HIV Tools') }}</span><br><span style="font-size: 90%; color: black">{{ _('Your profile') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -47,7 +45,7 @@
                                                 <div class="auth0-lock-body-content">
 
                                                     <small class="auth0-lock-terms">
-                                                        <span>These are your HIV Tools profile data which you can edit and update.</span>
+                                                        <span>{{ _('These are your HIV Tools profile data which you can edit and update.') }}</span>
                                                     </small>
 
                                                     {% with messages = get_flashed_messages() %}
@@ -59,10 +57,9 @@
                                                                 {% if return_url %}
                                                                     <br/>
                                                                     <li>
-                                                                        You will be redirected to your original page in <span
+                                                                        {{ _('You will be redirected to your original page in') }} <span
                                                                             id="redirectTimer">10</span> s.
-                                                                        If you don't get redirected <a
-                                                                            href="{{ return_url }}">click here</a>.
+                                                                        {{ _("If you don't get redirected")}} <a href="{{ return_url }}">{{ _('click here') }}</a>.
                                                                     </li>
                                                                     <script type="text/javascript">
                                                                     var return_url = "{{ return_url }}";
@@ -176,7 +173,7 @@
 
                                                                     <p class="auth0-lock-alternative"><a
                                                                             class="auth0-lock-alternative-link"
-                                                                            href="{{ url_for('main.change_password') }}">To change your password click here.</a></p>
+                                                                            href="{{ url_for('main.change_password') }}">{{ _('To change your password click here.') }}</a></p>
                                                                 </div>
                                                             </div>
                                                         </div>

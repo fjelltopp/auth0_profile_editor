@@ -5,6 +5,7 @@ from urllib.parse import quote_plus, urlencode
 from authlib.integrations.flask_client import OAuth
 from flask import redirect, render_template, session, url_for, \
     flash, Blueprint, request
+from flask_babel import _
 
 import ape.logic as logic
 import ape.forms as forms
@@ -38,7 +39,7 @@ def profile():
 
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
-        flash('User profile successfully saved')
+        flash(_('User profile successfully saved'))
         return redirect(url_for("main.profile"))
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)

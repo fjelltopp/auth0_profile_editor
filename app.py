@@ -1,7 +1,8 @@
 import os
 
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask
+from flask import Flask, request
+from flask_babel import Babel
 from flask_wtf import CSRFProtect
 
 from ape.healthz import healthz_blueprint
@@ -21,6 +22,8 @@ def create_app():
     oauth.init_app(flask_app)
     csrf = CSRFProtect()
     csrf.init_app(flask_app)
+    babel = Babel()
+    babel.init_app(flask_app)
     domain = env.get("AUTH0_DOMAIN")
 
     url = f'https://{domain}/.well-known/openid-configuration'
@@ -37,6 +40,13 @@ def create_app():
 
     flask_app.register_blueprint(app_blueprint)
     flask_app.register_blueprint(healthz_blueprint)
+
+    @babel.localeselector
+    def get_locale():
+        if request:
+            return request.accept_languages.best_match(['en'])
+        else:
+            return ['en']
 
     return flask_app
 
