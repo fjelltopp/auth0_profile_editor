@@ -20,58 +20,58 @@ msgstr ""
 
 #: ape/routes.py:41
 msgid "User profile successfully saved"
-msgstr ""
+msgstr "Perfil de usuário salvo com sucesso"
 
 #: templates/error.html:4 templates/error.html:7
 msgid "There was an error"
-msgstr ""
+msgstr "Havia um erro"
 
 #: templates/error.html:8
 msgid ""
 "An error prevented application from working. Please try again later. If "
-"the error persists, please contact support"
+"the error persists, please contact support."
 msgstr ""
+"Um erro impediu o funcionamento do aplicativo. Por favor, tente novamente mais tarde. Se "
+"o erro persistir, entre em contato com o suporte."
+
 
 #: templates/profile.html:6
 msgid "Profile editor"
-msgstr ""
+msgstr "Editor de perfil"
 
 #: templates/snippets/form.html:25
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: templates/snippets/form.html:27
 msgid "Log out"
-msgstr ""
+msgstr "Sair"
 
 #: templates/snippets/form.html:31
 msgid "HIV Tools"
-msgstr ""
+msgstr "Ferramentas de HIV"
 
 #: templates/snippets/form.html:31
 msgid "Your profile"
-msgstr ""
+msgstr "Seu perfil"
 
 #: templates/snippets/form.html:48
 msgid "These are your HIV Tools profile data which you can edit and update."
-msgstr ""
+msgstr "Estes são os dados de perfil do Ferramentas de HIV que você pode editar e atualizar."
 
 #: templates/snippets/form.html:60
 msgid "You will be redirected to your original page in"
-msgstr ""
+msgstr "Você será redirecionado para sua página original em"
 
 #: templates/snippets/form.html:62
 msgid "If you don't get redirected"
-msgstr ""
+msgstr "Se você não for redirecionado"
 
 #: templates/snippets/form.html:62
 msgid "click here"
-msgstr ""
+msgstr "Clique aqui"
 
 #: templates/snippets/form.html:176
 msgid "To change your password click here."
-msgstr ""
-
-#~ msgid "Error happend"
-#~ msgstr ""
+msgstr "Para alterar sua senha clique aqui."
 

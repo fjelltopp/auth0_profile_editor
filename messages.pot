@@ -28,7 +28,7 @@ msgstr ""
 #: templates/error.html:8
 msgid ""
 "An error prevented application from working. Please try again later. If "
-"the error persists, please contact support"
+"the error persists, please contact support."
 msgstr ""
 
 #: templates/profile.html:6

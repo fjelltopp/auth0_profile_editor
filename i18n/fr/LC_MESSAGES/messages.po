@@ -29,7 +29,7 @@ msgstr ""
 #: templates/error.html:8
 msgid ""
 "An error prevented application from working. Please try again later. If "
-"the error persists, please contact support"
+"the error persists, please contact support."
 msgstr ""
 
 #: templates/profile.html:6
@@ -71,7 +71,4 @@ msgstr ""
 #: templates/snippets/form.html:176
 msgid "To change your password click here."
 msgstr ""
-
-#~ msgid "Error happend"
-#~ msgstr ""
 
