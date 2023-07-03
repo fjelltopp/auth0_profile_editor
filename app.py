@@ -34,7 +34,8 @@ def create_app(config_object=None):
     csrf = CSRFProtect()
     csrf.init_app(flask_app)
     babel = Babel()
-    babel.init_app(flask_app, locale_selector=get_locale)
+    babel.init_app(flask_app, locale_selector=get_locale,
+                   default_translation_directories='i18n')
     domain = env.get("AUTH0_DOMAIN")
 
     url = f'https://{domain}/.well-known/openid-configuration'

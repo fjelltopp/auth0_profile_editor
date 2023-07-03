@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-03 13:08+0200\n"
+"POT-Creation-Date: 2023-07-03 14:23+0200\n"
 "PO-Revision-Date: 2023-07-03 13:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt_PT\n"
@@ -18,7 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: ape/routes.py:41
+#: ape/forms.py:25 ape/forms.py:26
+msgid "Full name"
+msgstr "Nome completo"
+
+#: ape/forms.py:28 ape/forms.py:29
+msgid "Email"
+msgstr "E-mail"
+
+#: ape/forms.py:28
+msgid "yours@example.com"
+msgstr "seu@exemplo.com"
+
+#: ape/forms.py:31 ape/forms.py:32
+msgid "Organisation name"
+msgstr "Nome da organização"
+
+#: ape/forms.py:34 ape/forms.py:35
+msgid "Job title"
+msgstr "Cargo"
+
+#: ape/forms.py:38 ape/forms.py:41
+msgid "Update"
+msgstr "Atualizar"
+
+#: ape/routes.py:40
 msgid "User profile successfully saved"
 msgstr "Perfil de usuário salvo com sucesso"
 
@@ -31,9 +55,8 @@ msgid ""
 "An error prevented application from working. Please try again later. If "
 "the error persists, please contact support."
 msgstr ""
-"Um erro impediu o funcionamento do aplicativo. Por favor, tente novamente mais tarde. Se "
-"o erro persistir, entre em contato com o suporte."
-
+"Um erro impediu o funcionamento do aplicativo. Por favor, tente novamente"
+" mais tarde. Se o erro persistir, entre em contato com o suporte."
 
 #: templates/profile.html:6
 msgid "Profile editor"
@@ -57,7 +80,9 @@ msgstr "Seu perfil"
 
 #: templates/snippets/form.html:48
 msgid "These are your HIV Tools profile data which you can edit and update."
-msgstr "Estes são os dados de perfil do Ferramentas de HIV que você pode editar e atualizar."
+msgstr ""
+"Estes são os dados de perfil do Ferramentas de HIV que você pode editar e"
+" atualizar."
 
 #: templates/snippets/form.html:60
 msgid "You will be redirected to your original page in"

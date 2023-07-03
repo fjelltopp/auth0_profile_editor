@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-03 13:08+0200\n"
+"POT-Creation-Date: 2023-07-03 14:23+0200\n"
 "PO-Revision-Date: 2023-07-03 13:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,7 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: ape/routes.py:41
+#: ape/forms.py:25 ape/forms.py:26
+msgid "Full name"
+msgstr ""
+
+#: ape/forms.py:28 ape/forms.py:29
+msgid "Email"
+msgstr ""
+
+#: ape/forms.py:28
+msgid "yours@example.com"
+msgstr ""
+
+#: ape/forms.py:31 ape/forms.py:32
+msgid "Organisation name"
+msgstr ""
+
+#: ape/forms.py:34 ape/forms.py:35
+msgid "Job title"
+msgstr ""
+
+#: ape/forms.py:38 ape/forms.py:41
+msgid "Update"
+msgstr ""
+
+#: ape/routes.py:40
 msgid "User profile successfully saved"
 msgstr "Le profil utilisateur a été enregistré avec succès"
 
@@ -31,8 +55,8 @@ msgid ""
 "An error prevented application from working. Please try again later. If "
 "the error persists, please contact support."
 msgstr ""
-"Une erreur a empêché l'application de fonctionner. Veuillez réessayer plus "
-"tard. Si l'erreur persiste, veuillez contacter le support."
+"Une erreur a empêché l'application de fonctionner. Veuillez réessayer "
+"plus tard. Si l'erreur persiste, veuillez contacter le support."
 
 #: templates/profile.html:6
 msgid "Profile editor"
