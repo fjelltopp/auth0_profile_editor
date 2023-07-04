@@ -98,7 +98,8 @@ def get_password_change_url(user_id):
     url = '/api/v2/tickets/password-change'
     data_object = {"user_id": user_id,
                    "client_id": env.get("AUTH0_CLIENT_ID")}
-    result = execute_mgmt_api_request(method="post", url=url, data_object=data_object)
+    result = execute_mgmt_api_request(
+        method="post", url=url, data_object=data_object)
 
     if result.status_code != 201:
         log.error(f"Couldn't get password change URL: {result.content}")
