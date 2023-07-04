@@ -88,9 +88,9 @@ def execute_mgmt_api_request(method, url, data_object=None):
     }
     auth0_domain = env.get("AUTH0_DOMAIN")
     data = json.dumps(data_object) if data_object else None
-    url = f'https://{auth0_domain}{url}'
+    full_url = f'https://{auth0_domain}{url}'
     result = requests.request(method=method,
-                              url=url, headers=headers, data=data)
+                              url=full_url, headers=headers, data=data)
     return result
 
 
@@ -98,7 +98,7 @@ def get_password_change_url(user_id):
     url = '/api/v2/tickets/password-change'
     data_object = {"user_id": user_id,
                    "client_id": env.get("AUTH0_CLIENT_ID")}
-    result = execute_mgmt_api_request("post", url, data_object)
+    result = execute_mgmt_api_request(method="post", url=url, data_object=data_object)
 
     if result.status_code != 201:
         log.error(f"Couldn't get password change URL: {result.content}")
