@@ -1,12 +1,12 @@
 from flask_wtf.csrf import generate_csrf
 
-from ape.util import create_app
+from app import create_app
 from ape.forms import UserDataForm
 
 
 class TestUserDataForm:
     def test_form_when_correct_data(self):
-        app, oauth = create_app()
+        app = create_app()
 
         with app.test_request_context('/profile', ):
             form = UserDataForm()
@@ -20,7 +20,7 @@ class TestUserDataForm:
             assert len(form.errors) == 0
 
     def test_form_when_incorrect_data(self):
-        app, oauth = create_app()
+        app = create_app()
 
         with app.test_request_context('/profile', ):
             form = UserDataForm()
