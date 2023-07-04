@@ -38,5 +38,3 @@ class TestUserDataForm:
                 'orgname': ['This field is required.'],
                 'jobtitle': ['This field is required.']
             }
-
-

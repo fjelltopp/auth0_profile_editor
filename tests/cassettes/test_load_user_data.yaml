@@ -1,0 +1,159 @@
+interactions:
+- request:
+    body: grant_type=client_credentials&client_id=client_id&client_secret=client_secret&audience=https://fake-auth0-domain/api/v2/
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '198'
+      User-Agent:
+      - python-requests/2.31.0
+      content-type:
+      - application/x-www-form-urlencoded
+    method: POST
+    uri: https://fake-auth0-domain/oauth/token
+  response:
+    body:
+      string: '{"access_token":"mgmt_token_value","scope":"read:users
+        update:users read:users_app_metadata update:users_app_metadata create:users_app_metadata
+        create:user_tickets update:clients update:client_keys update:client_credentials","expires_in":86400,"token_type":"Bearer"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 7dd3a6c1df993551-WAW
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 26 Jun 2023 07:14:05 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - did=s%3Av0%3A0937c500-13f1-11ee-a38f-47e2f60d4537.CGjWOzsIoNGi7JKE4rqOIT6PoYRgNawwSEsGZVEFkHA;
+        Max-Age=31557600; Path=/; Expires=Tue, 25 Jun 2024 13:14:05 GMT; HttpOnly;
+        Secure; SameSite=None
+      - did_compat=s%3Av0%3A0937c500-13f1-11ee-a38f-47e2f60d4537.CGjWOzsIoNGi7JKE4rqOIT6PoYRgNawwSEsGZVEFkHA;
+        Max-Age=31557600; Path=/; Expires=Tue, 25 Jun 2024 13:14:05 GMT; HttpOnly;
+        Secure
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Auth0-RequestId:
+      - ef6c6326f21d8c06e7fb
+      X-Content-Type-Options:
+      - nosniff
+      X-RateLimit-Limit:
+      - '30'
+      X-RateLimit-Remaining:
+      - '29'
+      X-RateLimit-Reset:
+      - '1687763646'
+      alt-svc:
+      - h3=":443"; ma=86400
+      ot-baggage-auth0-request-id:
+      - 7dd3a6c1df993551
+      ot-tracer-sampled:
+      - 'true'
+      ot-tracer-spanid:
+      - 6c4a3c481869501b
+      ot-tracer-traceid:
+      - 3683964c79af2bbb
+      traceparent:
+      - 00-00000000000000003683964c79af2bbb-6c4a3c481869501b-01
+      tracestate:
+      - auth0-request-id=7dd3a6c1df993551,auth0=true
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer mgmt_token_value
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.31.0
+    method: GET
+    uri: https://fake-auth0-domain/api/v2/users/ft_member_id
+  response:
+    body:
+      string: '{"created_at":"2022-11-02T16:37:23.860Z","email":"ft_member@fjelltopp.org","email_verified":false,"identities":[{"user_id":"ft_member_id","provider":"auth0","connection":"Username-Password-Authentication","isSocial":false}],"name":"Fjelltopp
+        Member Name","nickname":"fjelltopp_member","picture":"https://s.gravatar.com/avatar/2f304e3ab0ec3dd44de1ffce685502b8?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ffj.png","updated_at":"2023-06-21T14:39:13.233Z","user_id":"ft_member_id","username":"fjelltopp_member","last_password_reset":"2022-11-04T10:40:19.039Z","blocked":false,"user_metadata":{"jobtitle":"Member","orgname":"FT
+        Ltd","full_name":"Fjelltopp Member"},"last_ip":"178.43.248.169","last_login":"2023-06-21T14:34:21.141Z","logins_count":36}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 7dd3a6c3a913fbda-WAW
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 26 Jun 2023 07:14:06 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=Q_kgYTw77LKolVgLhLBjLPv8eB0zWcf0jm8loKzSgac-1687763646-0-AbtPx3A4pyoKTGOeCc9V0U3v/hxX9Yd6a8CSCvG3yishOpC3qvhGPA4B4xB5fQKyy0hrZP3VIZUsa4JXuZMVs9Y=;
+        path=/; expires=Mon, 26-Jun-23 07:44:06 GMT; domain=.eu.auth0.com; HttpOnly;
+        Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, origin
+      X-Content-Type-Options:
+      - nosniff
+      access-control-expose-headers:
+      - WWW-Authenticate,Server-Authorization
+      alt-svc:
+      - h3=":443"; ma=86400
+      ot-baggage-auth0-request-id:
+      - 7dd3a6c3a913fbda
+      ot-tracer-sampled:
+      - 'true'
+      ot-tracer-spanid:
+      - 45fadc394999a43e
+      ot-tracer-traceid:
+      - 4ddd5cd013ea6fe2
+      traceparent:
+      - 00-00000000000000004ddd5cd013ea6fe2-45fadc394999a43e-01
+      tracestate:
+      - auth0-request-id=7dd3a6c3a913fbda,auth0=true
+      x-ratelimit-limit:
+      - '10'
+      x-ratelimit-remaining:
+      - '9'
+      x-ratelimit-reset:
+      - '1687763647'
+    status:
+      code: 200
+      message: OK
+version: 1
