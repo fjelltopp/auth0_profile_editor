@@ -4,10 +4,10 @@ import os
 
 import requests
 from flask import session
+import ape.util as util
+
+log = logging.Logger(__name__)
 env = os.environ
-
-log = logging.getLogger(__name__)
-
 
 def get_user_data(user_id):
     mgmt_token = get_mgmt_token()

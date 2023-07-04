@@ -32,7 +32,7 @@ def create_app():
         client_kwargs={
             "scope": "openid profile email",
         },
-        server_metadata_url=url,
+        server_metadata_url=url
     )
 
     flask_app.register_blueprint(app_blueprint)
