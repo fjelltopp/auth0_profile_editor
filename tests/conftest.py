@@ -5,7 +5,7 @@ from app import create_app
 
 @pytest.fixture(scope="session")
 def test_app():
-    return create_app('config.Testing')
+    return create_app(config_object='config.Testing')
 
 
 @pytest.fixture
