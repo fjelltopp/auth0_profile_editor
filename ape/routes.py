@@ -1,9 +1,10 @@
-from urllib.parse import quote_plus, urlencode
 import logging
 import os
+from urllib.parse import quote_plus, urlencode
 
 from authlib.integrations.flask_client import OAuth
-from flask import redirect, render_template, session, url_for, flash, Blueprint
+from flask import redirect, render_template, session, url_for, \
+    flash, Blueprint, request
 
 import ape.logic as logic
 import ape.forms as forms
@@ -16,6 +17,9 @@ env = os.environ
 
 @app_blueprint.route("/")
 def home():
+    return_url = request.args.get("return_url", None)
+    if return_url:
+        session["return_url"] = return_url
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
@@ -35,12 +39,16 @@ def profile():
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
         flash('User profile successfully saved')
+        return redirect(url_for("main.profile"))
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
+    url = session.get("return_url") if session.get("return_url", "") else None
+
     return render_template(
         "profile.html",
-        form=form
+        form=form,
+        return_url=url
     )
 
 
@@ -49,7 +57,8 @@ def change_password():
     if not session.get("user_id", ""):
         return redirect("/")
 
-    return redirect(location=(logic.get_password_change_url(session.get("user_id"))))
+    pw_change_url = logic.get_password_change_url(session.get("user_id"))
+    return redirect(location=pw_change_url)
 
 
 @app_blueprint.route("/callback", methods=["GET", "POST"])
