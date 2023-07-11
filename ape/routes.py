@@ -1,6 +1,7 @@
+import json
 import logging
 import os
-from urllib.parse import quote_plus, urlencode
+from urllib.parse import quote_plus, urlencode, urlparse
 
 from authlib.integrations.flask_client import OAuth
 from flask import redirect, render_template, session, url_for, \
@@ -19,7 +20,13 @@ app_blueprint = Blueprint('main', __name__)
 def home():
     return_url = request.args.get("return_url", None)
     if return_url:
-        session["return_url"] = return_url
+        if not session.get("user_profile_updated", False):
+            session["return_url"] = return_url
+        else:
+            parsed_url = urlparse(return_url)
+            session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver"
+
+
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
@@ -38,12 +45,22 @@ def profile():
 
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
+        session["user_profile_updated"] = True
         flash(_('User profile successfully saved'))
         return redirect(url_for("main.profile"))
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
     url = session.get("return_url") if session.get("return_url", "") else None
+
+    if session.get("user_profile_updated", False):
+        return render_template(
+            "profile.html",
+            form=form,
+            return_url=url,
+            submit_url=session.get('submit_url', None),
+            user_profile_data=session.get("user_profile_data", None),
+        )
 
     return render_template(
         "profile.html",
