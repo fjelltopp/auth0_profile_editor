@@ -59,7 +59,7 @@ def profile():
             form=form,
             return_url=url,
             submit_url=session.get('submit_url', None),
-            user_profile_data=session.get("user_profile_data", None),
+            user_profile_updated=session.get("user_profile_updated", None),
         )
 
     return render_template(
