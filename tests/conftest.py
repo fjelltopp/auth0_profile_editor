@@ -16,4 +16,5 @@ def test_client(test_app):
 
 @pytest.fixture(autouse=True)
 def setup(test_app):
-    pass
+    with test_app.app_context():
+        yield
