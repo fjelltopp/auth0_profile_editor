@@ -24,8 +24,7 @@ def home():
             session["return_url"] = return_url
         else:
             parsed_url = urlparse(return_url)
-            session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver"
-
+            session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver?user_id=" + session.get("user_id", "")
 
     if session.get("user_id", ""):
         return redirect("/profile")
