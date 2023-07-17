@@ -31,7 +31,8 @@ def create_app(config_object=None):
             lang = session.get('lang', None)
             if lang and lang in flask_app.config['LANGUAGES']:
                 return lang
-            return request.accept_languages.best_match(flask_app.config['LANGUAGES'])
+            return request.accept_languages.best_match(
+                flask_app.config['LANGUAGES'])
         else:
             return flask_app.config['DEFAULT_LANGUAGE']
 
