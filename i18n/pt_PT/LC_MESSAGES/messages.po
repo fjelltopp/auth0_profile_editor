@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: auth0_profile_editor 1.0.0\n"
+"Project-Id-Version: Auth0 Profile Editor 1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-07-03 14:23+0200\n"
 "PO-Revision-Date: 2023-07-03 13:02+0200\n"
