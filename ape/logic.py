@@ -6,7 +6,6 @@ from flask import session, current_app
 
 log = logging.getLogger(__name__)
 
-
 def get_user_data(user_id):
     mgmt_token = get_mgmt_token()
 
