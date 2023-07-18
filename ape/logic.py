@@ -1,8 +1,13 @@
+import base64
 import json
 import logging
 
 import requests
 from flask import session
+
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import padding
 
 log = logging.getLogger(__name__)
 
@@ -111,6 +116,27 @@ def get_password_change_url(user_id):
         raise ProfileEditingError()
 
     return result.json().get("ticket")
+
+
+def encrypt_data(data):
+    try:
+        with open('./public_key.pem', 'rb') as key_file:
+            public_key = serialization.load_pem_public_key(
+                key_file.read(),
+                backend=default_backend()
+            )
+
+        encrypted = public_key.encrypt(
+            data.encode(),
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
+        return encrypted.hex()
+    except:
+        return data
 
 
 class ProfileEditingError(Exception):
