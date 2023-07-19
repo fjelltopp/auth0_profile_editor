@@ -125,7 +125,6 @@ def encrypt_data(data):
                 key_file.read(),
                 backend=default_backend()
             )
-
         encrypted = public_key.encrypt(
             data.encode(),
             padding.OAEP(
