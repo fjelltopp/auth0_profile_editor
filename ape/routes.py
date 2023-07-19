@@ -21,10 +21,7 @@ def home():
     return_url = request.args.get("return_url", None)
     if return_url:
         parsed_url = urlparse(return_url)
-        encrypted_user_id = logic.encrypt_data(session.get("user_id", ""))
-        if encrypted_user_id == session.get("user_id", ""):
-            encrypted_user_id = ""
-        session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver?user_id=" + encrypted_user_id
+        session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver?user_id=" + session.get("user_id", "")
 
     if session.get("user_id", ""):
         return redirect("/profile")

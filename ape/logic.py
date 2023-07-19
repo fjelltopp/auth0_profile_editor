@@ -1,20 +1,15 @@
-import base64
 import json
 import logging
+import os
 
 import requests
 from flask import session
-
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import padding
+env = os.environ
 
 log = logging.getLogger(__name__)
 
 
 def get_user_data(user_id):
-    from app import app
-
     mgmt_token = get_mgmt_token()
 
     log.debug(f"looking for user: {user_id}")
@@ -22,7 +17,7 @@ def get_user_data(user_id):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = app.config.get("AUTH0_DOMAIN")
+    auth0_domain = env.get("AUTH0_DOMAIN")
     url = f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}'
     res_json = requests.get(url, headers=headers).json()
 
@@ -38,11 +33,9 @@ def get_session():
 
 
 def get_mgmt_token():
-    from app import app
-
-    client_id = app.config.get('AUTH0_CLIENT_ID')
-    client_secret = app.config.get('AUTH0_CLIENT_SECRET')
-    auth0_domain = app.config.get("AUTH0_DOMAIN")
+    client_id = env.get('AUTH0_CLIENT_ID')
+    client_secret = env.get('AUTH0_CLIENT_SECRET')
+    auth0_domain = env.get("AUTH0_DOMAIN")
     payload = f"grant_type=client_credentials&client_id={client_id}" \
               f"&client_secret={client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
@@ -88,54 +81,30 @@ def update_user_data(form, user_id):
 
 
 def execute_mgmt_api_request(method, url, data_object=None):
-    from app import app
-
     mgmt_token = get_mgmt_token()
     headers = {
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = app.config.get("AUTH0_DOMAIN")
+    auth0_domain = env.get("AUTH0_DOMAIN")
     data = json.dumps(data_object) if data_object else None
-    url = f'https://{auth0_domain}{url}'
+    full_url = f'https://{auth0_domain}{url}'
     result = requests.request(method=method,
-                              url=url, headers=headers, data=data)
+                              url=full_url, headers=headers, data=data)
     return result
 
 
 def get_password_change_url(user_id):
-    from app import app
-
     url = '/api/v2/tickets/password-change'
     data_object = {"user_id": user_id,
-                   "client_id": app.config.get("AUTH0_CLIENT_ID")}
-    result = execute_mgmt_api_request("post", url, data_object)
+                   "client_id": env.get("AUTH0_CLIENT_ID")}
+    result = execute_mgmt_api_request(method="post", url=url, data_object=data_object)
 
     if result.status_code != 201:
         log.error(f"Couldn't get password change URL: {result.content}")
         raise ProfileEditingError()
 
     return result.json().get("ticket")
-
-
-def encrypt_data(data):
-    try:
-        with open('./public_key.pem', 'rb') as key_file:
-            public_key = serialization.load_pem_public_key(
-                key_file.read(),
-                backend=default_backend()
-            )
-        encrypted = public_key.encrypt(
-            data.encode(),
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                algorithm=hashes.SHA256(),
-                label=None
-            )
-        )
-        return encrypted.hex()
-    except:
-        return data
 
 
 class ProfileEditingError(Exception):
