@@ -1,6 +1,6 @@
-import json
+
 import logging
-import os
+
 from urllib.parse import quote_plus, urlencode, urlparse
 
 from authlib.integrations.flask_client import OAuth
@@ -20,11 +20,8 @@ app_blueprint = Blueprint('main', __name__)
 def home():
     return_url = request.args.get("return_url", None)
     if return_url:
-        if not session.get("user_profile_updated", False):
-            session["return_url"] = return_url
-        else:
-            parsed_url = urlparse(return_url)
-            session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver"
+        parsed_url = urlparse(return_url)
+        session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver"
 
 
     if session.get("user_id", ""):
