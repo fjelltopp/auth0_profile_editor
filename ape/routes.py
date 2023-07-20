@@ -21,8 +21,8 @@ def home():
     lang = request.args.get("lang", None)
     if return_url:
         parsed_url = urlparse(return_url)
-        session['return_url'] = parsed_url.scheme + "://" + \
-                                parsed_url.netloc + "/ape_data_receiver"
+        session['return_url'] = parsed_url.scheme + \
+        "://" + parsed_url.netloc + "/ape_data_receiver"
     if lang and lang in current_app.config['LANGUAGES']:
         session["lang"] = lang
     if session.get("user_id", ""):
