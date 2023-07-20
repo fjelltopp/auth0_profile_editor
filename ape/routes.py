@@ -1,11 +1,12 @@
 
 import logging
 
+
 from urllib.parse import quote_plus, urlencode, urlparse
 
 from authlib.integrations.flask_client import OAuth
 from flask import redirect, render_template, session, url_for, \
-    flash, Blueprint, request
+    flash, Blueprint, request, current_app
 from flask_babel import _
 
 import ape.logic as logic
@@ -19,11 +20,12 @@ app_blueprint = Blueprint('main', __name__)
 @app_blueprint.route("/")
 def home():
     return_url = request.args.get("return_url", None)
+    lang = request.args.get("lang", None)
     if return_url:
         parsed_url = urlparse(return_url)
         session['return_url'] = parsed_url.scheme + "://" + parsed_url.netloc + "/ape_data_receiver"
-
-
+    if lang and lang in current_app.config['LANGUAGES']:
+        session["lang"] = lang
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
@@ -87,12 +89,12 @@ def logout():
     session.clear()
     return redirect(
         "https://"
-        + env.get("AUTH0_DOMAIN")
+        + current_app.config["AUTH0_DOMAIN"]
         + "/v2/logout?"
         + urlencode(
             {
                 "returnTo": url_for("main.home", _external=True),
-                "client_id": env.get("AUTH0_CLIENT_ID"),
+                "client_id": current_app.config["AUTH0_CLIENT_ID"],
             },
             quote_via=quote_plus
         )

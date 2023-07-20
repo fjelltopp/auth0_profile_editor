@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request
+from flask import Flask, request, session
 from flask_babel import Babel
 from flask_wtf import CSRFProtect
 
@@ -22,11 +22,17 @@ def create_app(config_object=None):
         config_object = os.getenv('CONFIG_OBJECT', 'config.Config')
     flask_app.config.from_object(config_object)
 
-    flask_app.secret_key = flask_app.config.get("APP_SECRET_KEY")
+    verify_configuration(flask_app.config)
+
+    flask_app.secret_key = flask_app.config["APP_SECRET_KEY"]
 
     def get_locale():
         if request:
-            return request.accept_languages.best_match(app.config['LANGUAGES'])
+            lang = session.get('lang', None)
+            if lang and lang in flask_app.config['LANGUAGES']:
+                return lang
+            return request.accept_languages.best_match(
+                flask_app.config['LANGUAGES'])
         else:
             return flask_app.config['DEFAULT_LANGUAGE']
 
@@ -42,8 +48,8 @@ def create_app(config_object=None):
 
     oauth.register(
         "auth0",
-        client_id=flask_app.config.get("AUTH0_CLIENT_ID"),
-        client_secret=flask_app.config.get("AUTH0_CLIENT_SECRET"),
+        client_id=flask_app.config["AUTH0_CLIENT_ID"],
+        client_secret=flask_app.config["AUTH0_CLIENT_SECRET"],
         client_kwargs={
             "scope": "openid profile email",
         },
@@ -54,6 +60,28 @@ def create_app(config_object=None):
     flask_app.register_blueprint(healthz_blueprint)
 
     return flask_app
+
+
+def verify_configuration(config):
+    required_env_vars = [
+        'AUTH0_DOMAIN', 'AUTH0_CLIENT_SECRET',
+        'AUTH0_CLIENT_ID', 'APP_SECRET_KEY'
+    ]
+
+    def config_key_is_empty(key):
+        return config.get(key, None) is not None \
+            and len(config.get(key, "").strip()) == 0
+
+    missing_configs = list(filter(config_key_is_empty, required_env_vars))
+
+    if missing_configs:
+        error_string = f"Auth0 Profile Editor requires following " \
+                       f"environment variables to be set: {missing_configs}"
+        raise ApeConfigError(error_string)
+
+
+class ApeConfigError(Exception):
+    pass
 
 
 app = create_app()

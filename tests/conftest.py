@@ -5,7 +5,7 @@ from app import create_app
 
 @pytest.fixture(scope="session")
 def test_app():
-    return create_app('config.Testing')
+    return create_app(config_object='config.Testing')
 
 
 @pytest.fixture
@@ -16,4 +16,5 @@ def test_client(test_app):
 
 @pytest.fixture(autouse=True)
 def setup(test_app):
-    pass
+    with test_app.app_context():
+        yield
