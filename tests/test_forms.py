@@ -6,7 +6,7 @@ from ape.forms import UserDataForm
 
 class TestUserDataForm:
     def test_form_when_correct_data(self):
-        app = create_app()
+        app = create_app(config_object="config.Testing")
 
         with app.test_request_context('/profile', ):
             form = UserDataForm()
@@ -20,7 +20,7 @@ class TestUserDataForm:
             assert len(form.errors) == 0
 
     def test_form_when_incorrect_data(self):
-        app = create_app()
+        app = create_app(config_object="config.Testing")
 
         with app.test_request_context('/profile', ):
             form = UserDataForm()

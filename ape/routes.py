@@ -1,10 +1,11 @@
 import logging
-import os
+
 from urllib.parse import quote_plus, urlencode
 
 from authlib.integrations.flask_client import OAuth
 from flask import redirect, render_template, session, url_for, \
-    flash, Blueprint, request
+    flash, Blueprint, request, current_app
+from flask_babel import _
 
 import ape.logic as logic
 import ape.forms as forms
@@ -12,14 +13,16 @@ import ape.forms as forms
 log = logging.getLogger(__name__)
 oauth = OAuth()
 app_blueprint = Blueprint('main', __name__)
-env = os.environ
 
 
 @app_blueprint.route("/")
 def home():
     return_url = request.args.get("return_url", None)
+    lang = request.args.get("lang", None)
     if return_url:
         session["return_url"] = return_url
+    if lang and lang in current_app.config['LANGUAGES']:
+        session["lang"] = lang
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
@@ -38,7 +41,7 @@ def profile():
 
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
-        flash('User profile successfully saved')
+        flash(_('User profile successfully saved'))
         return redirect(url_for("main.profile"))
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
@@ -52,7 +55,7 @@ def profile():
     )
 
 
-@app_blueprint.route("/change_password", methods=['GET', 'POST'])
+@app_blueprint.route("/change_password", methods=["GET", "POST"])
 def change_password():
     if not session.get("user_id", ""):
         return redirect("/")
@@ -73,12 +76,12 @@ def logout():
     session.clear()
     return redirect(
         "https://"
-        + env.get("AUTH0_DOMAIN")
+        + current_app.config["AUTH0_DOMAIN"]
         + "/v2/logout?"
         + urlencode(
             {
                 "returnTo": url_for("main.home", _external=True),
-                "client_id": env.get("AUTH0_CLIENT_ID"),
+                "client_id": current_app.config["AUTH0_CLIENT_ID"],
             },
             quote_via=quote_plus
         )

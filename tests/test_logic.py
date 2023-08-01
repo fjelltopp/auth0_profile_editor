@@ -8,11 +8,6 @@ FT_MEMBER = "ft_member_id"
 COTE_EDITOR = 'cote_editor_id'
 FT_ADMIN = 'ft_admin_id'
 
-ENV_DATA = {
-    "AUTH0_MGMT_CLIENT_ID": "AUTH0_MGMT_CLIENT_ID_value",
-    "AUTH0_MGMT_CLIENT_SECRET": "AUTH0_MGMT_CLIENT_SECRET_value"
-}
-
 
 @pytest.mark.vcr
 def test_get_mgmt_token():

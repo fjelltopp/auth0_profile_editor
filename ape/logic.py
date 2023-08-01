@@ -1,12 +1,10 @@
 import json
 import logging
-import os
 
 import requests
-from flask import session
+from flask import session, current_app
 
-log = logging.Logger(__name__)
-env = os.environ
+log = logging.getLogger(__name__)
 
 
 def get_user_data(user_id):
@@ -17,7 +15,7 @@ def get_user_data(user_id):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    auth0_domain = current_app.config["AUTH0_DOMAIN"]
     url = f'{get_protocol()}://{auth0_domain}/api/v2/users/{user_id}'
     res_json = requests.get(url, headers=headers).json()
 
@@ -33,9 +31,9 @@ def get_session():
 
 
 def get_mgmt_token():
-    client_id = env.get('AUTH0_CLIENT_ID')
-    client_secret = env.get('AUTH0_CLIENT_SECRET')
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    client_id = current_app.config['AUTH0_CLIENT_ID']
+    client_secret = current_app.config['AUTH0_CLIENT_SECRET']
+    auth0_domain = current_app.config["AUTH0_DOMAIN"]
     payload = f"grant_type=client_credentials&client_id={client_id}" \
               f"&client_secret={client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
@@ -86,20 +84,19 @@ def execute_mgmt_api_request(method, url, data_object=None):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = env.get("AUTH0_DOMAIN")
+    auth0_domain = current_app.config["AUTH0_DOMAIN"]
     data = json.dumps(data_object) if data_object else None
-    full_url = f'https://{auth0_domain}{url}'
+    url = f'https://{auth0_domain}{url}'
     result = requests.request(method=method,
-                              url=full_url, headers=headers, data=data)
+                              url=url, headers=headers, data=data)
     return result
 
 
 def get_password_change_url(user_id):
     url = '/api/v2/tickets/password-change'
     data_object = {"user_id": user_id,
-                   "client_id": env.get("AUTH0_CLIENT_ID")}
-    result = execute_mgmt_api_request(
-        method="post", url=url, data_object=data_object)
+                   "client_id": current_app.config["AUTH0_CLIENT_ID"]}
+    result = execute_mgmt_api_request("post", url, data_object)
 
     if result.status_code != 201:
         log.error(f"Couldn't get password change URL: {result.content}")

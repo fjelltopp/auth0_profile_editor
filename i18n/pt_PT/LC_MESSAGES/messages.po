@@ -1,0 +1,102 @@
+# Portuguese (Portugal) translations for Auth0 Profile Editor.
+# Copyright (C) 2023 Fjelltopp LTD
+# This file is distributed under the same license as the Auth0 Profile Editor project.
+# Kamil Forenc <kamil@fjelltopp.org>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Auth0 Profile Editor 1.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-07-03 14:23+0200\n"
+"PO-Revision-Date: 2023-07-03 13:02+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_PT\n"
+"Language-Team: pt_PT <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: ape/forms.py:25 ape/forms.py:26
+msgid "Full name"
+msgstr "Nome completo"
+
+#: ape/forms.py:28 ape/forms.py:29
+msgid "Email"
+msgstr "E-mail"
+
+#: ape/forms.py:28
+msgid "yours@example.com"
+msgstr "seu@exemplo.com"
+
+#: ape/forms.py:31 ape/forms.py:32
+msgid "Organisation name"
+msgstr "Nome da organização"
+
+#: ape/forms.py:34 ape/forms.py:35
+msgid "Job title"
+msgstr "Cargo"
+
+#: ape/forms.py:38 ape/forms.py:41
+msgid "Update"
+msgstr "Atualizar"
+
+#: ape/routes.py:40
+msgid "User profile successfully saved"
+msgstr "Perfil de usuário salvo com sucesso"
+
+#: templates/error.html:4 templates/error.html:7
+msgid "There was an error"
+msgstr "Havia um erro"
+
+#: templates/error.html:8
+msgid ""
+"An error prevented application from working. Please try again later. If "
+"the error persists, please contact support."
+msgstr ""
+"Um erro impediu o funcionamento do aplicativo. Por favor, tente novamente"
+" mais tarde. Se o erro persistir, entre em contato com o suporte."
+
+#: templates/profile.html:6
+msgid "Profile editor"
+msgstr "Editor de perfil"
+
+#: templates/snippets/form.html:25
+msgid "Back"
+msgstr "Voltar"
+
+#: templates/snippets/form.html:27
+msgid "Log out"
+msgstr "Sair"
+
+#: templates/snippets/form.html:31
+msgid "HIV Tools"
+msgstr "Ferramentas de HIV"
+
+#: templates/snippets/form.html:31
+msgid "Your profile"
+msgstr "Seu perfil"
+
+#: templates/snippets/form.html:48
+msgid "These are your HIV Tools profile data which you can edit and update."
+msgstr ""
+"Estes são os dados de perfil do Ferramentas de HIV que você pode editar e"
+" atualizar."
+
+#: templates/snippets/form.html:60
+msgid "You will be redirected to your original page in"
+msgstr "Você será redirecionado para sua página original em"
+
+#: templates/snippets/form.html:62
+msgid "If you don't get redirected"
+msgstr "Se você não for redirecionado"
+
+#: templates/snippets/form.html:62
+msgid "click here"
+msgstr "Clique aqui"
+
+#: templates/snippets/form.html:176
+msgid "To change your password click here."
+msgstr "Para alterar sua senha clique aqui."
+
