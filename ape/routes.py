@@ -56,7 +56,8 @@ def profile():
         form = logic.load_data_from_server_to_form(form, user_id)
 
     back_url = session.get("back_url") if session.get("back_url", "") else None
-    after_save_url = session.get("after_save_url") if session.get("after_save_url", "") else None
+    after_save_url = session.get("after_save_url") \
+        if session.get("after_save_url", "") else None
 
     return render_template(
         "profile.html",
