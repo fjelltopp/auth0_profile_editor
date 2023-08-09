@@ -22,8 +22,8 @@
                                              style="background-color: #E31837;"></div>
                                     </div>
                                     <div class="auth0-lock-header-welcome">
-                                        {% if return_url %}
-                                            <a href="{{ return_url }}" id="qsBackBtn" class="back-button">{{ _('Back') }}</a>
+                                        {% if back_url %}
+                                            <a href="{{ back_url }}" id="qsBackBtn" class="back-button">{{ _('Back') }}</a>
                                         {% endif %}
                                         <a href="/logout" id="qsLogoutBtn" class="logout-button">{{ _('Log out') }}</a>
                                         <img alt="" class="auth0-lock-header-logo"
@@ -55,21 +55,21 @@
                                                             {% for message in messages %}
                                                                 <li>{{ message }}</li>
                                                             {% endfor %}
-                                                                {% if return_url %}
+                                                                {% if after_save_url %}
                                                                     <br/>
                                                                     <li>
                                                                         {{ _('You will be redirected to your original page in') }} <span
                                                                             id="redirectTimer">10</span> s.
-                                                                        {{ _("If you don't get redirected")}} <a href="{{ return_url }}">{{ _('click here') }}</a>.
+                                                                        {{ _("If you don't get redirected")}} <a href="{{ after_save_url }}">{{ _('click here') }}</a>.
                                                                     </li>
                                                                     <script type="text/javascript">
-                                                                    var return_url = "{{ return_url }}";
+                                                                    var back_url = "{{ after_save_url }}";
                                                                     var time = 10;
 
                                                                     window.setInterval(function() {
                                                                         time--;
                                                                         if (time === 0) {
-                                                                            window.location = return_url;
+                                                                            window.location = back_url;
                                                                         } else {
                                                                             document.getElementById('redirectTimer').innerHTML = time + "";
                                                                         }
