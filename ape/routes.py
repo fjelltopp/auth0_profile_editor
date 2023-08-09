@@ -17,18 +17,27 @@ app_blueprint = Blueprint('main', __name__)
 
 @app_blueprint.route("/")
 def home():
-    return_url = request.args.get("return_url", None)
     lang = request.args.get("lang", None)
-    if return_url:
-        session["return_url"] = return_url
     if lang and lang in current_app.config['LANGUAGES']:
         session["lang"] = lang
+    set_or_clear_session_variable("back_url")
+    set_or_clear_session_variable("after_save_url")
+
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
         return oauth.auth0.authorize_redirect(
             redirect_uri=url_for("main.callback", _external=True)
         )
+
+
+def set_or_clear_session_variable(variable_name):
+    value = request.args.get(variable_name, None)
+
+    if value:
+        session[variable_name] = value
+    else:
+        session.pop(variable_name, default=None)
 
 
 @app_blueprint.route("/profile", methods=['GET', 'POST'])
@@ -46,12 +55,15 @@ def profile():
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
-    url = session.get("return_url") if session.get("return_url", "") else None
+    back_url = session.get("back_url") if session.get("back_url", "") else None
+    after_save_url = session.get("after_save_url") \
+        if session.get("after_save_url", "") else None
 
     return render_template(
         "profile.html",
         form=form,
-        return_url=url
+        back_url=back_url,
+        after_save_url=after_save_url
     )
 
 
