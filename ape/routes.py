@@ -17,12 +17,12 @@ app_blueprint = Blueprint('main', __name__)
 
 @app_blueprint.route("/")
 def home():
-
     lang = request.args.get("lang", None)
     if lang and lang in current_app.config['LANGUAGES']:
         session["lang"] = lang
     set_or_clear_session_variable("back_url")
     set_or_clear_session_variable("after_save_url")
+
     if session.get("user_id", ""):
         return redirect("/profile")
     else:
