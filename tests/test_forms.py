@@ -1,7 +1,7 @@
 from flask_wtf.csrf import generate_csrf
 
 from app import create_app
-from ape.forms import UserDataForm
+from profile_editor.forms import UserDataForm
 
 
 class TestUserDataForm:

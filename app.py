@@ -5,8 +5,8 @@ from flask import Flask, request, session
 from flask_babel import Babel
 from flask_wtf import CSRFProtect
 
-from ape.healthz import healthz_blueprint
-from ape.routes import oauth, app_blueprint
+from profile_editor.healthz import healthz_blueprint
+from profile_editor.routes import oauth, app_blueprint
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -75,12 +75,12 @@ def verify_configuration(config):
     missing_configs = list(filter(config_key_is_empty, required_env_vars))
 
     if missing_configs:
-        error_string = f"Auth0 Profile Editor requires following " \
+        error_string = f"Profile Editor requires following " \
                        f"environment variables to be set: {missing_configs}"
-        raise ApeConfigError(error_string)
+        raise ProfileEditorConfigError(error_string)
 
 
-class ApeConfigError(Exception):
+class ProfileEditorConfigError(Exception):
     pass
 
 
