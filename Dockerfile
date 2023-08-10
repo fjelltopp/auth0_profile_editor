@@ -1,4 +1,4 @@
-FROM fjelltopp/python-fjelltopp-base:3.9
+FROM ghcr.io/fjelltopp/fjelltopp-base-images/python-fjelltopp-base:3.10
 
 COPY ./ /var/www/ape
 WORKDIR /var/www/ape
