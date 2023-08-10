@@ -7,8 +7,8 @@ from flask import redirect, render_template, session, url_for, \
     flash, Blueprint, request, current_app
 from flask_babel import _
 
-import ape.logic as logic
-import ape.forms as forms
+import profile_editor.logic as logic
+import profile_editor.forms as forms
 
 log = logging.getLogger(__name__)
 oauth = OAuth()

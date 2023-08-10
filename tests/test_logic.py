@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-import ape.logic as logic
+import profile_editor.logic as logic
 
 FT_MEMBER = "ft_member_id"
 COTE_EDITOR = 'cote_editor_id'
@@ -56,7 +56,7 @@ def test_update_user_data():
     logic.update_user_data(form, "user_id")
 
 
-@mock.patch('ape.logic.log')
+@mock.patch('profile_editor.logic.log')
 @pytest.mark.vcr
 def test_update_user_data_should_throw_upon_error(log):
     form = DummyUserDataForm()
