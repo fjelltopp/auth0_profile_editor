@@ -8,8 +8,8 @@ def build_docker_image(name, tag) {
   echo "Building container image"
 
   script {
-    def revision = "ape-${tag}"
-    def repository = "https://${env.APE_ECR_REGISTRY}"
+    def revision = "profile-editor-${tag}"
+    def repository = "https://${env.PROFILE_EDITOR_ECR_REGISTRY}"
     docker.withRegistry(repository) {
       def image = docker.build("${name}:${revision}", "-f Dockerfile --progress=plain .")
       image.push()
@@ -36,12 +36,12 @@ pipeline {
       }
     stage('Login to ECR'){
       steps{
-        sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${env.APE_ECR_REGISTRY}"
+        sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${env.PROFILE_EDITOR_ECR_REGISTRY}"
         }
       }
     stage('Build Image') {
       steps {
-        build_docker_image('ape-fjelltopp', tag)
+        build_docker_image('profile-editor-fjelltopp', tag)
         }
 
       }
