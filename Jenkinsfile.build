@@ -41,7 +41,7 @@ pipeline {
       }
     stage('Build Image') {
       steps {
-        build_docker_image('profile-editor-fjelltopp', tag)
+        build_docker_image('profile-editor', tag)
         }
 
       }
