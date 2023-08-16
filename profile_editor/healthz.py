@@ -10,7 +10,7 @@ def check_profile_editor():
 
 
 health = HealthCheck()
-health.add_check(check_profile_editor())
+health.add_check(check_profile_editor)
 
 
 @healthz_blueprint.route("/healthz")
