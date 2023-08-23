@@ -84,7 +84,7 @@ def execute_mgmt_api_request(method, url, data_object=None):
         'Authorization': f'Bearer {mgmt_token}',
         'Content-Type': 'application/json'
     }
-    auth0_domain = current_app.config["AUTH0_DOMAIN"]
+    auth0_domain = current_app.config["AUTH0_MANAGEMENT_DOMAIN"]
     data = json.dumps(data_object) if data_object else None
     url = f'https://{auth0_domain}{url}'
     result = requests.request(method=method,
