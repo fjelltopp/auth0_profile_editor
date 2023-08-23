@@ -33,7 +33,7 @@ def get_session():
 def get_mgmt_token():
     client_id = current_app.config['AUTH0_CLIENT_ID']
     client_secret = current_app.config['AUTH0_CLIENT_SECRET']
-    auth0_domain = current_app.config["AUTH0_DOMAIN"]
+    auth0_domain = current_app.config["AUTH0_MANAGEMENT_DOMAIN"]
     payload = f"grant_type=client_credentials&client_id={client_id}" \
               f"&client_secret={client_secret}" \
               f"&audience=https://{auth0_domain}/api/v2/"
