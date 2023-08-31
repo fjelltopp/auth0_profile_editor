@@ -51,19 +51,21 @@ def profile():
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
         flash(_('User profile successfully saved'))
-        return redirect(url_for("main.profile"))
+        return redirect(url_for("main.profile", success=True))
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
     back_url = session.get("back_url") if session.get("back_url", "") else None
     after_save_url = session.get("after_save_url") \
         if session.get("after_save_url", "") else None
+    success = request.args.get("success", False)
 
     return render_template(
         "profile.html",
         form=form,
         back_url=back_url,
-        after_save_url=after_save_url
+        after_save_url=after_save_url,
+        success=success
     )
 
 
