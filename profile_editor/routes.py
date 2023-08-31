@@ -22,6 +22,7 @@ def home():
         session["lang"] = lang
     set_or_clear_session_variable("back_url")
     set_or_clear_session_variable("after_save_url")
+    set_or_clear_session_variable("flash_message")
 
     if session.get("user_id", ""):
         return redirect("/profile")
@@ -58,6 +59,9 @@ def profile():
     back_url = session.get("back_url") if session.get("back_url", "") else None
     after_save_url = session.get("after_save_url") \
         if session.get("after_save_url", "") else None
+    flash_message = session.pop("flash_message")
+    if flash_message:
+        flash(flash_message)
     success = request.args.get("success", False)
 
     return render_template(
