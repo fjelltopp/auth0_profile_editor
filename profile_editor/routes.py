@@ -59,7 +59,7 @@ def profile():
     back_url = session.get("back_url") if session.get("back_url", "") else None
     after_save_url = session.get("after_save_url") \
         if session.get("after_save_url", "") else None
-    flash_message = session.pop("flash_message")
+    flash_message = session.pop("flash_message", None)
     if flash_message:
         flash(flash_message)
     success = request.args.get("success", False)
