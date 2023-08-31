@@ -22,6 +22,7 @@ def home():
         session["lang"] = lang
     set_or_clear_session_variable("back_url")
     set_or_clear_session_variable("after_save_url")
+    set_or_clear_session_variable("flash_message")
 
     if session.get("user_id", ""):
         return redirect("/profile")
@@ -51,19 +52,24 @@ def profile():
     if form.validate_on_submit():
         logic.update_user_data(form, user_id)
         flash(_('User profile successfully saved'))
-        return redirect(url_for("main.profile"))
+        return redirect(url_for("main.profile", success=True))
     elif not form.is_submitted():
         form = logic.load_data_from_server_to_form(form, user_id)
 
     back_url = session.get("back_url") if session.get("back_url", "") else None
     after_save_url = session.get("after_save_url") \
         if session.get("after_save_url", "") else None
+    flash_message = session.pop("flash_message", None)
+    if flash_message:
+        flash(flash_message)
+    success = request.args.get("success", False)
 
     return render_template(
         "profile.html",
         form=form,
         back_url=back_url,
-        after_save_url=after_save_url
+        after_save_url=after_save_url,
+        success=success
     )
 
 
